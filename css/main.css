@@ -1,0 +1,222 @@
+@charset "UTF-8";
+:root {
+  --pieceAngle: 100deg;
+}
+
+body {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding: 0;
+  margin: 0;
+  font-family: "Montserrat", sans-serif;
+}
+
+.gradient {
+  width: 200px;
+  height: 200px;
+  background-color: white;
+  margin: 10px;
+  border: 2px solid black;
+  box-sizing: border-box;
+  background-repeat: no-repeat;
+  background-origin: content-box;
+  padding: 5px;
+}
+
+.test {
+  background-image: radial-gradient(circle at center, transparent 50px, yellow 50px 70px, white 70px), conic-gradient(red, blue);
+}
+
+.cloud {
+  background-image: linear-gradient(0deg, white 38%, rgba(255, 255, 255, 0) 38%), radial-gradient(circle at 35% 65%, #000 25%, transparent calc(25% + 1px)), radial-gradient(circle at 65% 65%, #000 25%, transparent calc(25% + 1px)), radial-gradient(circle at 50% 47%, #000 25%, transparent calc(25% + 1px));
+}
+
+.hourglass {
+  background-image: radial-gradient(circle at 50% 197%, white, white 50%, transparent 50%), conic-gradient(from 330deg at 50% 52%, black 60deg, transparent 60deg), conic-gradient(from 150deg at 50% 48%, black 60deg, transparent 60deg);
+}
+
+.arrow {
+  background-image: conic-gradient(from 315deg at center right, white 270deg, rgba(255, 0, 0, 0) 270deg), linear-gradient(90deg, white 20%, rgba(255, 255, 255, 0) 20%), linear-gradient(0deg, rgba(255, 255, 255, 0) calc(50% - 10px), black calc(50% - 10px), black calc(50% + 10px), rgba(255, 255, 255, 0) calc(50% + 10px)), linear-gradient(90deg, white 80%, rgba(0, 0, 0, 0) 80%), conic-gradient(from 315deg at center right, rgba(0, 0, 255, 0) 270deg, black 270deg);
+  background-origin: content-box;
+}
+
+.bracket {
+  background-image: conic-gradient(from 315deg at center right, white 270deg, rgba(0, 0, 0, 0) 270deg), linear-gradient(90deg, white 20%, rgba(255, 255, 255, 0) 20%), linear-gradient(0deg, rgba(255, 255, 255, 0) calc(50% - 10px), black calc(50% - 10px), black calc(50% + 10px), rgba(255, 255, 255, 0) calc(50% + 10px)), conic-gradient(from 45deg at 40% 50%, rgba(0, 0, 255, 0) 90deg, white 90deg), conic-gradient(from 315deg at 90% 50%, rgba(0, 0, 255, 0) 270deg, white 270deg), conic-gradient(from 315deg at center right, white 270deg, black 270deg);
+  background-origin: content-box;
+  padding: 10px;
+}
+
+.t {
+  background-image: linear-gradient(0deg, rgba(0, 0, 0, 0) 50%, white 50%), linear-gradient(90deg, rgba(0, 0, 0, 0) calc(50% - 5px), black calc(50% - 5px), black calc(50% + 5px), rgba(0, 0, 0, 0) calc(50% + 5px));
+}
+
+.hamburger {
+  background-image: linear-gradient(90deg, #fff 12.5%, #0000 12.5% 87.5%, #fff 87.5%), linear-gradient(0deg, #fff 25%, currentColor 25% 33%, #fff 33% 45.5%, currentColor 45.5% 53.5%, #fff 53.5% 66%, currentColor 66% 74%, #fff 74%);
+}
+
+.apps {
+  background-size: 33.33% 33.33%;
+  background-repeat: repeat;
+  background-image: radial-gradient(35% 35%, currentColor calc(100% - 1px), #fff 100%);
+}
+
+.blaj {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.blaj::after {
+  content: "";
+  display: block;
+  width: 40%;
+  height: 40%;
+  background-color: red;
+  box-sizing: border-box;
+  background-size: 33.33% 33.33%;
+  background-repeat: repeat;
+  background-image: radial-gradient(35% 35%, currentColor calc(100% - 1px), #fff 100%);
+}
+
+.wifi {
+  background-image: conic-gradient(from 45deg at bottom, #fff 270deg, transparent 270deg), radial-gradient(50% 50% at bottom, currentColor 15%, #fff 15% 27%, currentColor 27% 39%, #fff 39% 51%, currentColor 51% 63%, #fff 63% 75%, currentColor 75% 87%, #fff 87% 99%);
+}
+
+.contactless {
+  background-image: conic-gradient(from 117.75deg, #fff 0.8458333333turn, transparent 0.8458333333turn), radial-gradient(50% 50%, #fff 35%, currentColor 35% 44%, #fff 44% 53%, currentColor 53% 62%, #fff 62% 71%, currentColor 71% 80%, #fff 80% 89%, currentColor 89% 98%, #fff 98%);
+}
+
+.pie {
+  background-image: radial-gradient(50% 50%, #fff calc(0% - 1px), transparent 0% calc(100% - 1px), #fff 100%), conic-gradient(from 0deg at 50% 50%, currentColor var(--pieceAngle), #fff var(--pieceAngle) 0deg);
+}
+
+.pie-periphery {
+  background-image: radial-gradient(50% 50%, #fff calc(84% - 1px), transparent 84% calc(100% - 1px), #fff 100%), conic-gradient(from 0deg at 50% 50%, currentColor var(--pieceAngle), #fff var(--pieceAngle) 0deg);
+}
+
+.face {
+  background-image: radial-gradient(4% 4% at 65% 45%, currentColor calc(100% - 1px), #0000 100%), radial-gradient(4% 4% at 35% 45%, currentColor calc(100% - 1px), #0000 100%), radial-gradient(50% 50% at 50% 50%, #0000 92%, currentColor 92% calc(100% - 1px), #fff 100%), radial-gradient(50% 50% at 80% -15%, currentColor calc(100% - 1px), #0000 100%), radial-gradient(50% 50% at 0% -20%, currentColor calc(100% - 1px), #0000 100%), linear-gradient(180deg, #fff 64%, #0000 calc(64% + 1px)), radial-gradient(30% 30% at 50% 50%, currentColor calc(100% - 1px), #0000 100%);
+}
+
+.done {
+  background-image: conic-gradient(from 135deg at 64% 5.4%, #0000 90deg, #fff 90deg 315deg), conic-gradient(from 315deg at 37.5% 67.5%, #fff 90deg, #0000 90deg 315deg), conic-gradient(from 315deg at 37.5% 79%, currentColor 90deg, #0000 90deg 315deg);
+}
+
+.chevron-down {
+  background-image: conic-gradient(from 135deg at 50% 16.6666666667%, #0000 90deg, #fff 90deg 315deg), conic-gradient(from 315deg at 50% 54.875%, #fff 90deg, #0000 90deg 315deg), conic-gradient(from 315deg at 50% 66.6666666667%, currentColor 90deg, #0000 90deg 315deg);
+}
+
+.chevron-up {
+  background-image: conic-gradient(from 315deg at 50% 83.3333333333%, #0000 90deg, #fff 90deg 315deg), conic-gradient(from 135deg at 50% 45.125%, #fff 90deg, #0000 90deg 315deg), conic-gradient(from 135deg at 50% 33.3333333333%, currentColor 90deg, #0000 90deg 315deg);
+}
+
+.chevron-right {
+  background-image: conic-gradient(from 45deg at 16.6666666667% 50%, #0000 90deg, #fff 90deg 315deg), conic-gradient(from 225deg at 54.875% 50%, #fff 90deg, #0000 90deg 315deg), conic-gradient(from 225deg at 66.6666666667% 50%, currentColor 90deg, #0000 90deg 315deg);
+}
+
+.chevron-left {
+  background-image: conic-gradient(from 225deg at 83.3333333333% 50%, #0000 90deg, #fff 90deg 315deg), conic-gradient(from 45deg at 45.125% 50%, #fff 90deg, #0000 90deg 315deg), conic-gradient(from 45deg at 33.3333333333% 50%, currentColor 90deg, #0000 90deg 315deg);
+}
+
+.ball {
+  background-image: radial-gradient(35% 35% at 100% 50%, #0000 92%, #fff 92% calc(100% - 1px), #0000 100%), radial-gradient(41.6666666667% 41.6666666667% at 50% 50%, currentColor calc(100% - 1px), #fff 100%);
+}
+
+.chevron-combined {
+  background-image: conic-gradient(from 225deg at 83.3333333333% 50%, #0000 90deg, #fff 90deg 315deg), conic-gradient(from 45deg at 45.125% 50%, #fff 90deg, #0000 90deg 315deg), conic-gradient(from 45deg at 33.3333333333% 50%, #f00 90deg, #0000 90deg 315deg);
+}
+.chevron-combined::after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 100%;
+  margin-top: 0%;
+  margin-left: 0%;
+  box-sizing: border-box;
+  background-image: conic-gradient(from 315deg at 50% 83.3333333333%, #0000 90deg, #fff 90deg 315deg), conic-gradient(from 135deg at 50% 45.125%, #fff 90deg, #0000 90deg 315deg), conic-gradient(from 135deg at 50% 33.3333333333%, currentColor 90deg, #0000 90deg 315deg);
+  transform: rotate(-90deg);
+}
+
+.text-blend {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: linear-gradient(0deg, #000 50%, #fff 50%);
+}
+.text-blend span {
+  font-size: 5rem;
+  font-weight: 600;
+  mix-blend-mode: difference;
+  color: #fff;
+}
+
+.gs1 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+.gs1::after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  background-image: conic-gradient(from -25deg at 60% 50%, #fff 230deg, #0000 230deg), radial-gradient(50% 50%, #0000 calc(37% - 1px), currentColor 37% 43%, #0000 calc(43% + 1px) calc(54% - 1px), currentColor 54% 61%, #0000 calc(61% + 1px) calc(72% - 1px), currentColor 72% 80%, #0000 calc(80% + 1px) calc(91% - 1px), currentColor 91% 100%, #0000 calc(100% + 1px));
+  animation-duration: 1s;
+  animation-name: rotate;
+  animation-timing-function: ease-in-out;
+  animation-direction: alternate;
+}
+.gs1:hover::after {
+  transform: scale(1.3);
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  3% {
+    transform: rotate(0deg);
+  }
+  97% {
+    transf´orm: rotate(540deg);
+  }
+  100% {
+    transform: rotate(540deg);
+  }
+}
+.gs1-logo {
+  background-image: url("../img/logo.png");
+  background-size: cover;
+}
+
+.rectangle {
+  background-image: linear-gradient(180deg, #fff 45%, #0000 45% 55%, #fff 55%), linear-gradient(90deg, #fff 35%, #000 35% 65%, #fff 65%);
+}
+
+.triangle {
+  background-image: linear-gradient(130deg, #0000 59.2671992039%, #fff 59.2671992039%), conic-gradient(from 100deg at 40% 20%, #000 60deg, #fff 60deg);
+}
+
+.triangle1 {
+  background-image: linear-gradient(130deg, #0000 59.2671992039%, #fff calc(59.2671992039% + 1px)), linear-gradient(70deg, #fff calc(50.6738468369% - 1px), #0000 50.6738468369%), linear-gradient(190deg, #fff 25.9958492358%, #000 calc(25.9958492358% + 1px));
+}
+
+.triangle-comparison {
+  background-image: linear-gradient(90deg, #fff 30%, #0000 30% 70%, #fff 70%), linear-gradient(0deg, #fff 30%, #000 30% 70%, #fff 70%);
+}
+
+.sector {
+  background-image: linear-gradient(-15deg, #f00 calc(60% - 1px), #0000 60%), linear-gradient(105deg, #f00 40%, #0f0 calc(40% + 1px));
+}
+
+.linear-test {
+  background-image: linear-gradient(150deg, black 50%, rgba(0, 0, 0, 0) 50%), linear-gradient(60deg, black 50%, rgba(0, 0, 0, 0) 50%);
+}
+
+.barcode {
+  background-image: linear-gradient(to right, #0000 2.5%,  currentColor 2.5% 7.5%, #fff 7.5% 11.5%, currentColor 11.5% 18.5%, #fff 18.5% 26.5%, currentColor 26.5% 32.5%, #fff 32.5% 34.5%, currentColor 34.5% 43.5%, #fff 43.5% 52.5%, currentColor 52.5% 54.5%, #fff 54.5% 60.5%, currentColor 60.5% 65.5%, #fff 65.5% 75.5%, currentColor 75.5% 79.5%, #fff 79.5% 81.5%, currentColor 81.5% 84.5%, #fff 84.5% 90.5%, currentColor 90.5% 97.5%, #0000 97.5%);
+}
+
+/*# sourceMappingURL=main.css.map */

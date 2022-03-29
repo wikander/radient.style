@@ -1,0 +1,107 @@
+@use "sass:math";
+@use "sass:list";
+@use "./paint.scss";
+@use "./vars.scss";
+@use "./utils.scss";
+
+@mixin pie($starAngle, $pieceAngle, $pieRadius, $centerHole, $c, $bgc) {
+  background-image: radial-gradient(
+      $pieRadius $pieRadius,
+      $bgc utils.openDown($centerHole),
+      transparent $centerHole utils.openDown(100%),
+      $bgc 100%
+    ),
+    conic-gradient(
+      from $starAngle at 50% 50%,
+      $c $pieceAngle,
+      $bgc $pieceAngle $starAngle
+    );
+}
+
+@mixin barcode($pattern, $c, $bgc) {
+  $totalNumberOfModules: 95;
+
+  $patternSum: 0;
+  @each $size in $pattern {
+    $patternSum: $patternSum + $size;
+  }
+  @if ($patternSum != $totalNumberOfModules) {
+    @error "Wrong number of modules in pattern: #{$patternSum}";
+  }
+
+  $colors: $bgc $c;
+
+  $linearGradientPattern: "";
+  $index: 1;
+  $prevEnd: 2.5%;
+
+  @each $size in $pattern {
+    $currentColor: list.nth($colors, $index % 2 + 1);
+    $currentWidth: list.nth($pattern, $index);
+    $thisEnd: $prevEnd + $currentWidth;
+    $separator: ",";
+
+    @if $index == 1 {
+      $separator: "";
+    }
+    $linearGradientPattern: "#{$linearGradientPattern}#{$separator} #{$currentColor} #{$prevEnd} #{$thisEnd}";
+
+    $prevEnd: $thisEnd;
+    $index: $index + 1;
+  }
+
+  background-image: linear-gradient(
+    to right,
+    vars.$transparent 2.5%,
+    #{$linearGradientPattern},
+    vars.$transparent 97.5%
+  );
+}
+
+@mixin face($eyeSize: 4%, $c: currentColor, $bgc: #fff) {
+  $eyeDistance: 30%;
+  $leftEyePositionX: 50% - math.div($eyeDistance, 2);
+  $leftEyePositionY: 45%;
+  $rightEyePositionX: 50% + math.div($eyeDistance, 2);
+  $rightEyePositionY: 45%;
+
+  $mouthRadius: 30%;
+  $mouthPositionY: 80%;
+  $mouthCenterPositionY: $mouthPositionY - $mouthRadius;
+  $mouthHeight: 16%;
+  $mouthCut: $mouthPositionY - $mouthHeight;
+  background-image: #{paint.circleFilled(
+        $c,
+        vars.$transparent,
+        $rightEyePositionX,
+        $rightEyePositionY,
+        $eyeSize
+      )},
+    // rightEye
+    #{paint.circleFilled(
+        $c,
+        vars.$transparent,
+        $leftEyePositionX,
+        $leftEyePositionY,
+        $eyeSize
+      )},
+    // leftEye,
+    #{paint.circleOutline($c, vars.$transparent, $bgc, 50%, 50%, 50%)},
+    // Head
+    #{paint.circleFilled($c, vars.$transparent, 80%, -15%, 50%)},
+    // Hair2,
+    #{paint.circleFilled($c, vars.$transparent, 0%, -20%, 50%)},
+    // Hair1
+    linear-gradient(
+        180deg,
+        $bgc $mouthCut,
+        vars.$transparent calc($mouthCut + 1px)
+      ),
+    #{paint.circleFilled(
+        $c,
+        vars.$transparent,
+        50%,
+        $mouthCenterPositionY,
+        $mouthRadius
+      )}; // Mouth;
+}

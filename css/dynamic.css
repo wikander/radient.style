@@ -1,0 +1,68 @@
+:root {
+  --pieceAngle: 100deg;
+}
+
+:root {
+  --faceEyeSize: 4%;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+  min-height: 100%;
+  font-family: "Montserrat", sans-serif;
+}
+
+.dynamic-page {
+  display: flex;
+  flex-direction: row;
+  width: 100vw;
+  height: 100vh;
+}
+.dynamic-page .view {
+  flex-basis: 0;
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+.dynamic-page .control {
+  flex-basis: 0;
+  flex-grow: 1;
+  padding: 24px 0;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.dynamic-page .control label {
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0 10vw;
+}
+.dynamic-page .control input {
+  box-sizing: border-box;
+  margin-top: 6px;
+  padding: 6px;
+  line-height: 32px;
+  width: 100%;
+}
+
+.gradient {
+  width: 400px;
+  height: 400px;
+  background-color: white;
+  margin: 10px;
+  border: 2px solid #e7e7e7;
+  box-sizing: border-box;
+  background-repeat: no-repeat;
+  background-origin: content-box;
+  padding: 10px;
+}
+
+.face {
+  background-image: radial-gradient(var(--faceEyeSize) var(--faceEyeSize) at 65% 45%, #000 calc(100% - 1px), #0000 100%), radial-gradient(var(--faceEyeSize) var(--faceEyeSize) at 35% 45%, #000 calc(100% - 1px), #0000 100%), radial-gradient(50% 50% at 50% 50%, #0000 92%, #000 92% calc(100% - 1px), #fff 100%), radial-gradient(50% 50% at 80% -15%, #000 calc(100% - 1px), #0000 100%), radial-gradient(50% 50% at 0% -20%, #000 calc(100% - 1px), #0000 100%), linear-gradient(180deg, #fff 64%, #0000 calc(64% + 1px)), radial-gradient(30% 30% at 50% 50%, #000 calc(100% - 1px), #0000 100%);
+}
+
+/*# sourceMappingURL=dynamic.css.map */

@@ -1,0 +1,107 @@
+@use "./vars.scss";
+@use "./utils.scss";
+@use "sass:math";
+
+@function barFilled($c, $bgc, $angle, $width) {
+  $center: 50%;
+  $start: $center - math.div($width, 2);
+  $end: $start + $width;
+  @return "linear-gradient(#{$angle}, #{$bgc} #{$start}, #{$c} #{$start} #{$end}, #{$bgc} #{$end})";
+}
+
+@function rectangle(
+  $c,
+  $bgcMain: #fff,
+  $bgcCross: #fff,
+  $mainAngle,
+  $width,
+  $height
+) {
+  $crossAngle: $mainAngle + 90deg;
+  @return "#{barFilled(vars.$transparent, $bgcCross, $crossAngle, $height)}, #{barFilled($c, $bgcMain, $mainAngle, $width)}";
+}
+
+@function circleFilled($c, $bgc, $positionX, $positionY, $radius) {
+  @return ovalFilled($c, $bgc, $positionX, $positionY, $radius, $radius);
+}
+
+@function ovalFilled($c, $bgc, $positionX, $positionY, $radiusX, $radiusY) {
+  @return "radial-gradient(#{$radiusX} #{$radiusY} at #{$positionX} #{$positionY}, #{$c} calc(100% - 1px), #{$bgc} 100%)";
+}
+
+@function triangleFilled(
+  $color,
+  $bgc,
+  $positionX,
+  $positionY,
+  $angle,
+  $height,
+  $direction: 180deg
+) {
+  $startPosition: 50% +
+    utils.distanceToPointOnLinearFromHalf($direction, $positionX, $positionY);
+
+  $startAngle: $direction - math.div($angle, 2);
+  $normalizedHeight: utils.fromLinearGradientDistance($height, $direction);
+
+  $cone: "conic-gradient(from #{$startAngle} at #{$positionX} #{$positionY}, #{$color} #{$angle}, #{$bgc} #{$angle})";
+  $height: "linear-gradient(#{$direction}, #{vars.$transparent} #{$startPosition + $normalizedHeight}, #{$bgc} #{$startPosition + $normalizedHeight})";
+  @return "#{$height}, #{$cone}";
+}
+
+@function triangleFilledAntiAliased(
+  $color,
+  $bgc,
+  $positionX,
+  $positionY,
+  $angle,
+  $height,
+  $direction: 180deg
+) {
+  $startPosition: 50% +
+    utils.distanceToPointOnLinearFromHalf($direction, $positionX, $positionY);
+  $normalizedHeight: utils.fromLinearGradientDistance($height, $direction);
+  $height: "linear-gradient(#{$direction}, #{vars.$transparent} #{$startPosition + $normalizedHeight}, #{$bgc} #{utils.openUp($startPosition + $normalizedHeight)})";
+
+  @return "#{$height}, #{sector($color, $bgc, $direction, $angle, $positionX, $positionY)}";
+}
+
+@function circleOutline($c, $bgc1, $bgc2, $positionX, $positionY, $radius) {
+  @return ovalOutline(
+    $c,
+    $bgc1,
+    $bgc2,
+    $positionX,
+    $positionY,
+    $radius,
+    $radius
+  );
+}
+
+@function ovalOutline(
+  $c,
+  $bgc1,
+  $bgc2,
+  $positionX,
+  $positionY,
+  $radiusX,
+  $radiusY
+) {
+  @return "radial-gradient(#{$radiusX} #{$radiusY} at #{$positionX} #{$positionY}, #{$bgc1} #{100% - math.percentage(vars.$lineWidthRelative)}, #{$c} #{100% - math.percentage(vars.$lineWidthRelative)} calc(100% - 1px), #{$bgc2} 100%)";
+}
+
+@function sector($c, $bgc, $direction, $angle, $positionX, $positionY) {
+  $startAngle: $direction - math.div($angle, 2) + 90;
+
+  $side1Start: 50% +
+    utils.distanceToPointOnLinearFromHalf($startAngle, $positionX, $positionY);
+
+  $side1: "linear-gradient(#{$startAngle}, #{$bgc} #{$side1Start}, #{$c} #{utils.openUp($side1Start)})";
+
+  $endAngle: $direction + math.div($angle, 2) - 90;
+  $side2Start: 50% +
+    utils.distanceToPointOnLinearFromHalf($endAngle, $positionX, $positionY);
+
+  $side2: "linear-gradient(#{$endAngle}, #{$bgc} #{utils.openDown($side2Start)}, #{vars.$transparent} #{$side2Start})";
+  @return "#{$side2}, #{$side1}";
+}

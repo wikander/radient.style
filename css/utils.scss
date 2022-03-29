@@ -1,0 +1,100 @@
+@use "sass:math";
+
+@function closed($length) {
+  @return $length;
+}
+
+@function openUp($length) {
+  @return calc($length + 1px);
+}
+
+@function openDown($length) {
+  @return calc($length - 1px);
+}
+
+@mixin layer($size: 100%) {
+  $margin: math.div(100% - $size, 2);
+  &::after {
+    content: "";
+    display: block;
+    width: $size;
+    height: $size;
+    margin-top: $margin;
+    margin-left: $margin;
+    box-sizing: border-box;
+
+    @content;
+  }
+}
+
+@function linearGradientLength($angle) {
+  $length: math.abs(math.sin($angle)) + math.abs(math.cos($angle));
+  @return $length;
+}
+
+// Make it shorter
+@function fromLinearGradientDistance($distance, $angle) {
+  @return math.div($distance, linearGradientLength($angle));
+}
+
+// Make it longer
+@function toLinearGradientDistance($distance, $angle) {
+  @return $distance * linearGradientLength($angle);
+}
+
+@function strip-unit($number) {
+  @if type-of($number) == "number" and not unitless($number) {
+    @return math.div($number, ($number * 0 + 1));
+  }
+
+  @return $number;
+}
+
+@function distanceToPointOnLinearFromHalf($direction, $positionX, $positionY) {
+  $positionQuadrant: NaN;
+  $x: NaN;
+  $y: NaN;
+
+  @if ($positionX < 50 and $positionY < 50) {
+    $positionQuadrant: 3;
+    $x: 50 - strip-unit($positionY);
+    $y: strip-unit($positionX);
+  } @else if ($positionX >= 50 and $positionY < 50) {
+    $positionQuadrant: 0;
+    $x: strip-unit($positionX) - 50;
+    $y: strip-unit($positionY);
+  } @else if ($positionX >= 50 and $positionY >= 50) {
+    $positionQuadrant: 1;
+    $x: strip-unit($positionY) - 50;
+    $y: 100 - strip-unit($positionX);
+  } @else if ($positionX < 50 and $positionY >= 50) {
+    $positionQuadrant: 2;
+    $x: 50 - strip-unit($positionX);
+    $y: 100 - strip-unit($positionY);
+  }
+
+  $v: $direction - 90 * $positionQuadrant;
+
+  $w: 90 - math.atan(math.div($y, $x));
+  $startPositionModifierDirection: -1;
+  @if (
+    (($w + 90 * $positionQuadrant) > ($v - 90)) and
+      (($w + 90 * $positionQuadrant) > ($v + 90))
+  ) {
+    $startPositionModifierDirection: 1;
+  }
+
+  @if ($startPositionModifierDirection == -1) {
+    $v: $v - 180;
+  }
+
+  $a: math.div($x, math.sin($v));
+  $c: math.div($x, math.tan($v));
+  $b: math.cos($v) * (50 - $y - $c);
+
+  $startPositionModifier: fromLinearGradientDistance($a + $b, $v);
+
+  @debug "Start position normalized: #{$startPositionModifier}";
+
+  @return $startPositionModifier * $startPositionModifierDirection;
+}
