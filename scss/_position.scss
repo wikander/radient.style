@@ -1,0 +1,19 @@
+@use "sass:math";
+@use "./vars.scss";
+@use "./utils.scss";
+
+@function point($p) {
+  @return math.percentage(math.div($p, vars.$gridSize));
+}
+
+@function pointOpenUp($p) {
+  @return utils.openUp(point($p));
+}
+
+@function pointOpenDown($p) {
+  @return utils.openDown(point($p));
+}
+
+@function relative($p) {
+  @return math.percentage($p);
+}

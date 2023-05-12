@@ -1,0 +1,251 @@
+@use "sass:math";
+@use "sass:list";
+@use "./paint.scss";
+@use "./vars.scss";
+@use "./utils.scss";
+@use "./position.scss";
+
+@mixin pie($starAngle, $pieceAngle, $pieRadius, $centerHole, $c, $bgc) {
+  background-image: radial-gradient(
+      $pieRadius $pieRadius,
+      $bgc utils.openDown($centerHole),
+      transparent $centerHole utils.openDown(100%),
+      $bgc 100%
+    ),
+    conic-gradient(
+      from $starAngle at 50% 50%,
+      $c $pieceAngle,
+      $bgc $pieceAngle $starAngle
+    );
+}
+
+@mixin barcode($pattern, $c, $bgc) {
+  $totalNumberOfModules: 95;
+
+  $patternSum: 0;
+  @each $size in $pattern {
+    $patternSum: $patternSum + $size;
+  }
+  @if ($patternSum != $totalNumberOfModules) {
+    @error "Wrong number of modules in pattern: #{$patternSum}";
+  }
+
+  $colors: $bgc $c;
+
+  $linearGradientPattern: "";
+  $index: 1;
+  $prevEnd: 2.5%;
+
+  @each $size in $pattern {
+    $currentColor: list.nth($colors, $index % 2 + 1);
+    $currentWidth: list.nth($pattern, $index);
+    $thisEnd: $prevEnd + $currentWidth;
+    $separator: ",";
+
+    @if $index == 1 {
+      $separator: "";
+    }
+    $linearGradientPattern: "#{$linearGradientPattern}#{$separator} #{$currentColor} #{$prevEnd} #{$thisEnd}";
+
+    $prevEnd: $thisEnd;
+    $index: $index + 1;
+  }
+
+  background-image: linear-gradient(
+    to right,
+    vars.$transparent 2.5%,
+    #{$linearGradientPattern},
+    vars.$transparent 97.5%
+  );
+}
+
+@mixin face($eyeSize: 4%, $c: currentColor, $bgc: #fff) {
+  $eyeDistance: 30%;
+  $leftEyePositionX: 50% - math.div($eyeDistance, 2);
+  $leftEyePositionY: 45%;
+  $rightEyePositionX: 50% + math.div($eyeDistance, 2);
+  $rightEyePositionY: 45%;
+
+  $mouthRadius: 30%;
+  $mouthPositionY: 80%;
+  $mouthCenterPositionY: $mouthPositionY - $mouthRadius;
+  $mouthHeight: 16%;
+  $mouthCut: $mouthPositionY - $mouthHeight;
+  background-image: #{paint.circleFilled(
+        $c,
+        vars.$transparent,
+        $rightEyePositionX,
+        $rightEyePositionY,
+        $eyeSize
+      )},
+    // rightEye
+    #{paint.circleFilled(
+        $c,
+        vars.$transparent,
+        $leftEyePositionX,
+        $leftEyePositionY,
+        $eyeSize
+      )},
+    // leftEye,
+    #{paint.circleOutline($c, vars.$transparent, $bgc, 50%, 50%, 50%)},
+    // Head
+    #{paint.circleFilled($c, vars.$transparent, 80%, -15%, 50%)},
+    // Hair2,
+    #{paint.circleFilled($c, vars.$transparent, 0%, -20%, 50%)},
+    // Hair1
+    linear-gradient(
+        180deg,
+        $bgc $mouthCut,
+        vars.$transparent calc($mouthCut + 1px)
+      ),
+    #{paint.circleFilled(
+        $c,
+        vars.$transparent,
+        50%,
+        $mouthCenterPositionY,
+        $mouthRadius
+      )}; // Mouth;
+}
+
+@mixin arrow(
+  $direction,
+  $outerAngleCenterX,
+  $outerAngleCenterY,
+  $innerAngleCenterX,
+  $innerAngleCenterY,
+  $cutCenterX,
+  $cutCenterY,
+  $arrowLineStart,
+  $c,
+  $bgc
+) {
+  @if ($direction % 90deg != 0deg) {
+    @error "This implementation only allows horizontal or vertical chevrons/arrows: #{$direction}";
+  }
+
+  $chevronStart: $direction + 180deg - 45deg;
+  $cutStart: $chevronStart + 180deg;
+
+  $cut: "conic-gradient(from #{$cutStart} at #{$cutCenterX} #{$cutCenterY}, #{vars.$transparent} 90deg, #{$bgc} 90deg #{$cutStart})";
+  $innerAngle: "conic-gradient(from #{$chevronStart} at #{$innerAngleCenterX} #{$innerAngleCenterY}, #{$bgc} 90deg, #{vars.$transparent} 90deg #{$chevronStart})";
+  $outerAngle: "conic-gradient(from #{$chevronStart} at #{$outerAngleCenterX} #{$outerAngleCenterY}, #{$c} 90deg, #{vars.$transparent} 90deg #{$chevronStart})";
+
+  $line: null;
+
+  @if (utils.strip-unit($arrowLineStart) > 0) {
+    $lineAngle: "conic-gradient(from #{$chevronStart + 90} at #{$outerAngleCenterX} #{$outerAngleCenterY}, #{$bgc} 270deg, #{vars.$transparent} 270deg)";
+    $lineRestriction: "linear-gradient(#{$direction}, #{$bgc} #{$arrowLineStart}, #{vars.$transparent} #{$arrowLineStart})";
+    $fullLine: "linear-gradient(#{$direction + 90}, #{vars.$transparent} #{50% - math.div(math.percentage(vars.$lineWidthRelative), 2)}, #{$c} #{50% - math.div(math.percentage(vars.$lineWidthRelative), 2)}, #{$c} #{50% + math.div(math.percentage(vars.$lineWidthRelative), 2)}, #{vars.$transparent} #{50% + math.div(math.percentage(vars.$lineWidthRelative), 2)})";
+
+    $line: #{$lineAngle}, #{$lineRestriction}, #{$fullLine};
+  }
+
+  $angle: #{$cut}, #{$innerAngle}, #{$outerAngle};
+  background-image: list.join(#{$line}, #{$angle}, $separator: comma);
+}
+
+@mixin bar-chart($c, $bgc) {
+  $barWidth: null;
+  $bars: 40%, 2000%, 150%, 50%;
+  $colors: currentColor;
+  $horizontalSpacing: 5%;
+  $verticalSpacing: 5%;
+
+  $horizontalPadding: 5%;
+  $verticalPadding: 5%;
+
+  @if (not $barWidth) {
+    $barWidth: math.div(100% - ((list.length($bars) + 1) * $horizontalSpacing),  list.length($bars));
+  }
+  
+  $lastColor: list.nth($colors, list.length($colors));
+  @while list.length($colors) < list.length($bars) {
+    $colors: list.append($colors, $lastColor, $separator: comma);
+  }
+
+  $maxBarWidth: math.div(100% - 2 * $horizontalPadding - $horizontalSpacing * (list.length($bars) - 1), list.length($bars));
+  @if ($barWidth > $maxBarWidth) {
+    $barWidth: $maxBarWidth;
+  }
+  
+  $maxBarHeight: 100% - 2 * $verticalPadding;
+  @for $i from 1 through list.length($bars) {
+    @if (list.nth($bars, $i) > $maxBarHeight) {
+      $bars: list.set-nth($bars, $i, $maxBarHeight);
+    }
+  }
+
+  $barsWithIndexAndColor: ();
+  @for $i from 1 through list.length($bars) {
+    $barsWithIndexAndColor: list.append($barsWithIndexAndColor, ($i, list.nth($bars, $i), list.nth($colors, $i)));
+  }
+  $sortedBarsWithIndexAndColor: utils.reverse(utils.quick-sort-number($barsWithIndexAndColor, 2));
+  
+  $barsRender: ();
+  $yPosition: 100% - $verticalSpacing;
+  @each $barWidthIndexAndColor in $sortedBarsWithIndexAndColor {
+    $i: list.nth($barWidthIndexAndColor, 1);
+    $barHeight: list.nth($barWidthIndexAndColor, 2);
+    $barColor: list.nth($barWidthIndexAndColor, 3);
+    $xPosition: ($i - 1) * ($barWidth + $horizontalSpacing) + $horizontalPadding;
+    $barsRender: list.append($barsRender, "#{paint.rectangle($barColor, transparent, $bgc, 90deg, $barWidth, $barHeight, $xPosition, $yPosition)}", $separator: comma);
+  }
+
+  background-image: #{$barsRender};
+}
+
+@function plus($center, $width, $height, $lineWidth, $c, $bgc) {
+  $plusStart: $center - math.div($lineWidth, 2);
+  $plusEnd: $center + math.div($lineWidth, 2);
+
+  $horizontalCutStart: $center - math.div($width, 2);
+  $horizontalCutEnd: $center + math.div($width, 2);
+
+  $verticalCutStart: $center - math.div($width, 2);
+  $verticalCutEnd: $center + math.div($width, 2);
+
+  $verticalCut: "linear-gradient(180deg, #{$bgc} #{position.point($verticalCutStart)}, #{vars.$transparent} #{position.point($verticalCutStart)}, #{vars.$transparent} #{position.point($verticalCutEnd)}, #{$bgc} #{position.point($verticalCutEnd)})";
+  $vertical: "linear-gradient(90deg, #{$bgc} #{position.point($horizontalCutStart)}, #{vars.$transparent} #{position.point($horizontalCutStart)}, #{vars.$transparent} #{position.point($plusStart)}, #{$c} #{position.point($plusStart)}, #{$c} #{position.point($plusEnd)}, #{vars.$transparent} #{position.point($plusEnd)}, #{vars.$transparent} #{position.point($horizontalCutEnd)}, #{$bgc} #{position.point($horizontalCutEnd)})";
+  $horizontal: "linear-gradient(180deg, #{vars.$transparent} #{position.point($plusStart)}, #{$c} #{position.point($plusStart)}, #{$c} #{position.point($plusEnd)}, #{vars.$transparent} #{position.point($plusEnd)})";
+  @return "#{$verticalCut}, #{$vertical}, #{$horizontal}";
+}
+
+@function minus($center, $width, $lineWidth, $c, $bgc) {
+  $minusStart: $center - math.div($lineWidth, 2);
+  $minusEnd: $center + math.div($lineWidth, 2);
+
+  $horizontalCutStart: $center - math.div($width, 2);
+  $horizontalCutEnd: $center + math.div($width, 2);
+
+  $horizontalCut: "linear-gradient(90deg, #{$bgc} #{position.point($horizontalCutStart)}, #{vars.$transparent} #{position.point($horizontalCutStart)}, #{vars.$transparent} #{position.point($horizontalCutEnd)}, #{$bgc} #{position.point($horizontalCutEnd)})";
+  $horizontal: "linear-gradient(180deg, #{vars.$transparent} #{position.point($minusStart)}, #{$c} #{position.point($minusStart)}, #{$c} #{position.point($minusEnd)}, #{vars.$transparent} #{position.point($minusEnd)})";
+  @return "#{$horizontalCut}, #{$horizontal}";
+}
+
+@function info($center, $lineWidth, $c, $bgc) {
+  $infoStart: $center - math.div($lineWidth, 2);
+  $infoEnd: $center + math.div($lineWidth, 2);
+
+  $pointStart: 7;
+  $pointEnd: $pointStart + $lineWidth;
+
+  $iStart: $pointEnd + $lineWidth;
+  $iEnd: $iStart + 6; 
+
+  $info: "linear-gradient(180deg, #{$bgc} #{position.point($pointStart)}, #{vars.$transparent} #{position.point($pointStart)} #{position.point($pointEnd)}, #{$bgc} #{position.point($pointEnd)} #{position.point($iStart)}, #{vars.$transparent} #{position.point($iStart)} #{position.point($iEnd)}, #{$bgc} #{position.point($iEnd)})";
+  $vertical: "linear-gradient(90deg, #{vars.$transparent} #{position.point($infoStart)}, #{$c} #{position.point($infoStart)}, #{$c} #{position.point($infoEnd)}, #{vars.$transparent} #{position.point($infoEnd)})";
+  @return "#{$info}, #{$vertical}";
+}
+
+@function battery($c, $bgc, $chargeLeft: 0) {
+  $chargeUsed: 1 - $chargeLeft;
+  $chargeFull: 6;
+  $chargeEmpty: 20;
+  $chargeCurrent: $chargeFull + (($chargeEmpty - $chargeFull) * $chargeUsed);
+
+  $cut: "conic-gradient(from 270deg at #{position.point(10)} #{position.point(4)}, #{$bgc} 90deg, #{vars.$transparent} 90deg), conic-gradient(at #{position.point(14)} #{position.point(4)}, #{$bgc} 90deg, #{vars.$transparent} 90deg), linear-gradient(90deg, #{$bgc} #{position.point(7)}, #{vars.$transparent} #{position.point(7)} #{position.point(17)}, #{$bgc} #{position.point(17)}), linear-gradient(180deg, #{$bgc} #{position.point(2)}, #{vars.$transparent} #{position.point(2)} #{position.point(22)}, #{$bgc} #{position.point(22)})";
+  $horizontal: "linear-gradient(180deg, #{$bgc} #{position.point(2)}, #{vars.$transparent} #{position.point(2)} #{position.point(4)}, #{$c} #{position.point(4)} #{position.point($chargeFull)}, #{$bgc} #{position.point($chargeFull)} #{position.point($chargeCurrent)}, #{$c} #{position.point($chargeCurrent)} #{position.point($chargeEmpty)}, #{$c} #{position.point($chargeEmpty)} #{position.point(22)}, #{$bgc} #{position.point(22)})";
+  $peg: "linear-gradient(90deg, #{vars.$transparent} #{position.point(10)}, #{$c} #{position.point(10)} #{position.point(14)}, #{vars.$transparent} #{position.point(14)})";
+  $vertical: "linear-gradient(90deg, #{vars.$transparent} #{position.point(7)}, #{$c} #{position.point(7)} #{position.point(9)}, #{vars.$transparent} #{position.point(9)} #{position.point(15)}, #{$c} #{position.point(15)} #{position.point(17)}, #{vars.$transparent} #{position.point(17)})";
+  @return "#{$cut}, #{$vertical}, #{$horizontal}, #{$peg}";
+}

@@ -2,9 +2,7 @@
 @use "./utils.scss";
 @use "sass:math";
 
-@function barFilled($c, $bgc, $angle, $width) {
-  $center: 50%;
-  $start: $center - math.div($width, 2);
+@function barFilled($c, $bgc, $angle, $width, $start) {
   $end: $start + $width;
   @return "linear-gradient(#{$angle}, #{$bgc} #{$start}, #{$c} #{$start} #{$end}, #{$bgc} #{$end})";
 }
@@ -15,10 +13,13 @@
   $bgcCross: #fff,
   $mainAngle,
   $width,
-  $height
+  $height,
+  $xPosition,
+  // Position of left bottom corner
+  $yPosition
 ) {
   $crossAngle: $mainAngle + 90deg;
-  @return "#{barFilled(vars.$transparent, $bgcCross, $crossAngle, $height)}, #{barFilled($c, $bgcMain, $mainAngle, $width)}";
+  @return "#{barFilled(vars.$transparent, $bgcCross, $crossAngle, $height, $yPosition - $height)}, #{barFilled($c, $bgcMain, $mainAngle, $width, $xPosition)}";
 }
 
 @function circleFilled($c, $bgc, $positionX, $positionY, $radius) {
@@ -66,7 +67,15 @@
   @return "#{$height}, #{sector($color, $bgc, $direction, $angle, $positionX, $positionY)}";
 }
 
-@function circleOutline($c, $bgc1, $bgc2, $positionX, $positionY, $radius) {
+@function circleOutline(
+  $c,
+  $bgc1,
+  $bgc2,
+  $positionX,
+  $positionY,
+  $radius,
+  $lineWidth: math.percentage(vars.$lineWidthRelative)
+) {
   @return ovalOutline(
     $c,
     $bgc1,
@@ -74,7 +83,8 @@
     $positionX,
     $positionY,
     $radius,
-    $radius
+    $radius,
+    $lineWidth
   );
 }
 
@@ -85,9 +95,10 @@
   $positionX,
   $positionY,
   $radiusX,
-  $radiusY
+  $radiusY,
+  $lineWidth: math.percentage(vars.$lineWidthRelative)
 ) {
-  @return "radial-gradient(#{$radiusX} #{$radiusY} at #{$positionX} #{$positionY}, #{$bgc1} #{100% - math.percentage(vars.$lineWidthRelative)}, #{$c} #{100% - math.percentage(vars.$lineWidthRelative)} calc(100% - 1px), #{$bgc2} 100%)";
+  @return "radial-gradient(#{$radiusX} #{$radiusY} at #{$positionX} #{$positionY}, #{$bgc1} #{100% - $lineWidth}, #{$c} #{100% - $lineWidth} calc(100% - 1px), #{$bgc2} 100%)";
 }
 
 @function sector($c, $bgc, $direction, $angle, $positionX, $positionY) {

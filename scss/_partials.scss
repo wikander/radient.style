@@ -1,0 +1,5 @@
+@use "./position.scss";
+@use "./vars.scss";
+@function circularOuline($c: currentColor, $bgc: #fff) {
+  @return "radial-gradient(50% 50%, #{vars.$transparent} #{position.pointOpenDown(16)}, #{$c} #{position.point(16)} #{position.point(20)}, #{vars.$transparent} #{position.pointOpenUp(20)})";
+}

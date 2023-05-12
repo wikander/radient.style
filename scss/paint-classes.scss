@@ -1,0 +1,39 @@
+@use "./_paint.scss";
+
+// Paint geometrics
+.rectangle {
+  background-image: #{paint.rectangle(
+      #000,
+      #fff,
+      #fff,
+      90deg,
+      50%,
+      10%,
+      25%,
+      100%
+    )};
+}
+
+.triangle {
+  background-image: #{paint.triangleFilled(
+      #000,
+      #fff,
+      40%,
+      20%,
+      60deg,
+      40%,
+      130deg
+    )};
+}
+
+.triangle1 {
+  background-image: #{paint.triangleFilledAntiAliased(
+      #000,
+      #fff,
+      40%,
+      20%,
+      60deg,
+      40%,
+      130deg
+    )};
+}

@@ -1,0 +1,23 @@
+{
+  "name": "radient.style",
+  "version": "0.0.1",
+  "description": "This is radient!",
+  "main": "index.css",
+  "scripts": {
+    "build": "sass --no-source-map scss:dist/css/",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wikander/radient.style.git"
+  },
+  "author": "Simon Wikander",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wikander/radient.style/issues"
+  },
+  "homepage": "https://github.com/wikander/radient.style#readme",
+  "devDependencies": {
+    "sass": "^1.62.1"
+  }
+}

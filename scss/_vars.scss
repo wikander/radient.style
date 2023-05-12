@@ -1,0 +1,6 @@
+@use "sass:math";
+
+$lineWidthRelative: math.div(1, 12);
+$lineWidthRelativeDiagonal: math.div(3, 25);
+$transparent: #0000;
+$gridSize: 24;

@@ -1,4 +1,5 @@
 @use "sass:math";
+@use "sass:list";
 
 @function closed($length) {
   @return $length;
@@ -97,4 +98,47 @@
   @debug "Start position normalized: #{$startPositionModifier}";
 
   @return $startPositionModifier * $startPositionModifierDirection;
+}
+
+@function quick-sort-number($list, $sortOnIndex) {
+  $less: ();
+  $equal: ();
+  $large: ();
+
+  @if length($list) > 1 {
+    $seed: list.nth($list, math.ceil(math.div(list.length($list), 2)));
+
+    @each $item in $list {
+      @if (list.nth($item, $sortOnIndex) == list.nth($seed, $sortOnIndex)) {
+        $equal: list.append($equal, $item);
+      } @else if (list.nth($item, $sortOnIndex) < list.nth($seed, $sortOnIndex))
+      {
+        $less: list.append($less, $item);
+      } @else if (list.nth($item, $sortOnIndex) > list.nth($seed, $sortOnIndex))
+      {
+        $large: list.append($large, $item);
+      }
+    }
+
+    @return list.join(
+      list.join(quick-sort-number($less, $sortOnIndex), $equal),
+      quick-sort-number($large, $sortOnIndex)
+    );
+  }
+
+  @return $list;
+}
+
+@function reverse($list, $recursive: false) {
+  $result: ();
+
+  @for $i from length($list) * -1 through -1 {
+    @if type-of(nth($list, abs($i))) == list and $recursive {
+      $result: append($result, reverse(nth($list, abs($i)), $recursive));
+    } @else {
+      $result: append($result, nth($list, abs($i)));
+    }
+  }
+
+  @return $result;
 }
