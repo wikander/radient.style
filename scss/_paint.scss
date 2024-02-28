@@ -2,9 +2,21 @@
 @use "./utils.scss";
 @use "sass:math";
 
-@function barFilled($c, $bgc, $angle, $width, $start) {
-  $end: $start + $width;
-  @return "linear-gradient(#{$angle}, #{$bgc} #{$start}, #{$c} #{$start} #{$end}, #{$bgc} #{$end})";
+// rename to segment
+@function barFilled($c, $bgc, $direction, $height, $start) {
+  $startDistanceFromMiddle: $start - 50%;
+  $normalizedStartDistanceFromMiddle: utils.fromLinearGradientDistance(
+    $startDistanceFromMiddle,
+    $direction
+  );
+
+  @debug "Bar start: #{$direction} #{$start} -> #{$normalizedStartDistanceFromMiddle}";
+
+  $normalizedStart: 50% + $normalizedStartDistanceFromMiddle;
+  $normalizedHeight: utils.fromLinearGradientDistance($height, $direction);
+  $normalizedEnd: $normalizedStart + $normalizedHeight;
+
+  @return "linear-gradient(#{$direction}, #{$bgc} #{$normalizedStart}, #{$c} #{$normalizedStart} #{$normalizedEnd}, #{$bgc} #{$normalizedEnd})";
 }
 
 @function rectangle(

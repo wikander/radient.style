@@ -1,0 +1,169 @@
+@use "radient-icons";
+@use "./utils";
+
+.apps {
+  @include radient-icons.apps();
+}
+
+.cloud {
+  @include radient-icons.cloud();
+}
+
+.face {
+  @include radient-icons.face();
+}
+
+.pie {
+  @include radient-icons.pie();
+}
+
+.pie-periphery {
+  @include radient-icons.pie-periphery();
+}
+
+.contactless {
+  @include radient-icons.contactless();
+}
+
+.wifi {
+  @include radient-icons.wifi();
+}
+
+.menu {
+  @include radient-icons.menu();
+}
+
+.gs1 {
+  @include radient-icons.gs1();
+}
+
+.done {
+  @include radient-icons.done();
+}
+
+.chevron-down {
+  @include radient-icons.chevron-down();
+}
+
+.chevron-up {
+  @include radient-icons.chevron-up();
+}
+
+.chevron-right {
+  @include radient-icons.chevron-right();
+}
+
+.chevron-left {
+  @include radient-icons.chevron-left();
+}
+
+.arrow-up {
+  @include radient-icons.arrow-up();
+}
+
+.arrow-down {
+  @include radient-icons.arrow-down();
+}
+.arrow-right {
+  @include radient-icons.arrow-right();
+}
+
+.arrow-left {
+  @include radient-icons.arrow-left();
+}
+
+.ball {
+  @include radient-icons.ball();
+}
+
+.barcode {
+  @include radient-icons.barcode();
+}
+
+.search {
+  @include radient-icons.search();
+}
+
+.trash {
+  @include radient-icons.trash();
+}
+
+.bar-chart {
+  @include radient-icons.bar-chart();
+}
+
+.logo {
+  @include radient-icons.logo();
+}
+
+.logo-outer {
+  @include radient-icons.logo-outer();
+}
+
+.add {
+  @include radient-icons.add();
+}
+
+.add-circle {
+  @include radient-icons.add-circle();
+}
+
+.remove {
+  @include radient-icons.remove();
+}
+
+.remove-circle {
+  @include radient-icons.remove-circle();
+}
+
+.info {
+  @include radient-icons.info();
+}
+
+.info-circle {
+  @include radient-icons.info-circle();
+}
+
+.battery-empty {
+  @include radient-icons.battery-empty();
+}
+
+.battery-full {
+  @include radient-icons.battery-full();
+}
+
+.battery-1 {
+  @include radient-icons.battery-1();
+}
+.battery-2 {
+  @include radient-icons.battery-2();
+}
+.battery-3 {
+  @include radient-icons.battery-3();
+}
+.battery-4 {
+  @include radient-icons.battery-4();
+}
+.battery-5 {
+  @include radient-icons.battery-5();
+}
+.battery-6 {
+  @include radient-icons.battery-6();
+}
+
+.blaj {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  // compensate for container dimensions, create function to recalulate %-units to the original container.
+  &::after {
+    content: "";
+    display: block;
+    width: 40%;
+    height: 40%;
+    background-color: red;
+    box-sizing: border-box;
+    @include radient-icons.apps();
+  }
+}

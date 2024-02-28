@@ -21,14 +21,22 @@
 }
 
 @mixin cloud($c: currentColor, $bgc: #fff) {
-  background-image: linear-gradient(
-      0deg,
-      #{$bgc} 38%,
-      #{vars.$transparent} 38%
+  background-image: linear-gradient(0deg, #{$bgc} 38%, #{vars.$transparent} 38%),
+    radial-gradient(
+      circle at 35% 65%,
+      #{$c} 25%,
+      #{vars.$transparent} #{utils.openUp(25%)}
     ),
-    radial-gradient(circle at 35% 65%, #{$c} 25%, #{vars.$transparent} #{utils.openUp(25%)}),
-    radial-gradient(circle at 65% 65%, #{$c} 25%, #{vars.$transparent} #{utils.openUp(25%)}),
-    radial-gradient(circle at 50% 47%, #{$c} 25%, #{vars.$transparent} #{utils.openUp(25%)});
+    radial-gradient(
+      circle at 65% 65%,
+      #{$c} 25%,
+      #{vars.$transparent} #{utils.openUp(25%)}
+    ),
+    radial-gradient(
+      circle at 50% 47%,
+      #{$c} 25%,
+      #{vars.$transparent} #{utils.openUp(25%)}
+    );
 }
 
 @mixin face($c: currentColor, $bgc: #fff) {
@@ -57,18 +65,12 @@
       50% 50%,
       $bgc $centerRadius,
       $c $centerRadius ($centerRadius + $lineWidth),
-      $bgc ($centerRadius + $lineWidth)
-        ($centerRadius + $lineWidth * 2),
-      $c ($centerRadius + $lineWidth * 2)
-        ($centerRadius + $lineWidth * 3),
-      $bgc ($centerRadius + $lineWidth * 3)
-        ($centerRadius + $lineWidth * 4),
-      $c ($centerRadius + $lineWidth * 4)
-        ($centerRadius + $lineWidth * 5),
-      $bgc ($centerRadius + $lineWidth * 5)
-        ($centerRadius + $lineWidth * 6),
-      $c ($centerRadius + $lineWidth * 6)
-        ($centerRadius + $lineWidth * 7),
+      $bgc ($centerRadius + $lineWidth) ($centerRadius + $lineWidth * 2),
+      $c ($centerRadius + $lineWidth * 2) ($centerRadius + $lineWidth * 3),
+      $bgc ($centerRadius + $lineWidth * 3) ($centerRadius + $lineWidth * 4),
+      $c ($centerRadius + $lineWidth * 4) ($centerRadius + $lineWidth * 5),
+      $bgc ($centerRadius + $lineWidth * 5) ($centerRadius + $lineWidth * 6),
+      $c ($centerRadius + $lineWidth * 6) ($centerRadius + $lineWidth * 7),
       $bgc ($centerRadius + $lineWidth * 7)
     );
 }
@@ -86,18 +88,12 @@
       50% 50% at bottom,
       $c $centerRadius,
       $bgc $centerRadius ($centerRadius + $lineWidth),
-      $c ($centerRadius + $lineWidth)
-        ($centerRadius + ($lineWidth * 2)),
-      $bgc ($centerRadius + ($lineWidth * 2))
-        ($centerRadius + ($lineWidth * 3)),
-      $c ($centerRadius + ($lineWidth * 3))
-        ($centerRadius + ($lineWidth * 4)),
-      $bgc ($centerRadius + ($lineWidth * 4))
-        ($centerRadius + ($lineWidth * 5)),
-      $c ($centerRadius + ($lineWidth * 5))
-        ($centerRadius + ($lineWidth * 6)),
-      $bgc ($centerRadius + ($lineWidth * 6))
-        ($centerRadius + ($lineWidth * 7))
+      $c ($centerRadius + $lineWidth) ($centerRadius + ($lineWidth * 2)),
+      $bgc ($centerRadius + ($lineWidth * 2)) ($centerRadius + ($lineWidth * 3)),
+      $c ($centerRadius + ($lineWidth * 3)) ($centerRadius + ($lineWidth * 4)),
+      $bgc ($centerRadius + ($lineWidth * 4)) ($centerRadius + ($lineWidth * 5)),
+      $c ($centerRadius + ($lineWidth * 5)) ($centerRadius + ($lineWidth * 6)),
+      $bgc ($centerRadius + ($lineWidth * 6)) ($centerRadius + ($lineWidth * 7))
     );
 }
 
@@ -188,47 +184,135 @@
 }
 
 @mixin chevron-down($c: currentColor, $bgc: #fff) {
-  @include radient-dynamic.arrow(180deg, 50%, math.percentage(math.div(2, 3)), 50%, math.percentage(math.div(2, 3) - vars.$lineWidthRelativeDiagonal), 50%, math.percentage(math.div(1, 6)), 0, $c, $bgc);
+  @include radient-dynamic.arrow(
+    180deg,
+    50%,
+    math.percentage(math.div(2, 3)),
+    50%,
+    math.percentage(math.div(2, 3) - vars.$lineWidthRelativeDiagonal),
+    50%,
+    math.percentage(math.div(1, 6)),
+    0,
+    $c,
+    $bgc
+  );
 }
 
 @mixin chevron-up($c: currentColor, $bgc: #fff) {
-  @include radient-dynamic.arrow(0deg, 50%, math.percentage(math.div(1, 3)), 50%, math.percentage(math.div(1, 3) + vars.$lineWidthRelativeDiagonal), 50%, math.percentage(math.div(5, 6)), 0, $c, $bgc);
+  @include radient-dynamic.arrow(
+    0deg,
+    50%,
+    math.percentage(math.div(1, 3)),
+    50%,
+    math.percentage(math.div(1, 3) + vars.$lineWidthRelativeDiagonal),
+    50%,
+    math.percentage(math.div(5, 6)),
+    0,
+    $c,
+    $bgc
+  );
 }
 
 @mixin chevron-right($c: currentColor, $bgc: #fff) {
-  @include radient-dynamic.arrow(90deg, math.percentage(math.div(2, 3)), 50%, math.percentage(math.div(2, 3) - vars.$lineWidthRelativeDiagonal), 50%, math.percentage(math.div(1, 6)), 50%, 0, $c, $bgc);
+  @include radient-dynamic.arrow(
+    90deg,
+    math.percentage(math.div(2, 3)),
+    50%,
+    math.percentage(math.div(2, 3) - vars.$lineWidthRelativeDiagonal),
+    50%,
+    math.percentage(math.div(1, 6)),
+    50%,
+    0,
+    $c,
+    $bgc
+  );
 }
 
 @mixin chevron-left($c: currentColor, $bgc: #fff) {
-  @include radient-dynamic.arrow(270deg, math.percentage(math.div(1, 3)), 50%, math.percentage(math.div(1, 3) + vars.$lineWidthRelativeDiagonal), 50%, math.percentage(math.div(5, 6)), 50%, 0, $c, $bgc);
+  @include radient-dynamic.arrow(
+    270deg,
+    math.percentage(math.div(1, 3)),
+    50%,
+    math.percentage(math.div(1, 3) + vars.$lineWidthRelativeDiagonal),
+    50%,
+    math.percentage(math.div(5, 6)),
+    50%,
+    0,
+    $c,
+    $bgc
+  );
 }
 
 @mixin arrow-up($c: currentColor, $bgc: #fff) {
-  @include radient-dynamic.arrow(0deg, 50%, math.percentage(math.div(1, 6)), 50%, math.percentage(math.div(1, 6) + vars.$lineWidthRelativeDiagonal), 50%, math.percentage(math.div(5, 6)), math.percentage(math.div(1, 6)), $c, $bgc);
+  @include radient-dynamic.arrow(
+    0deg,
+    50%,
+    math.percentage(math.div(1, 6)),
+    50%,
+    math.percentage(math.div(1, 6) + vars.$lineWidthRelativeDiagonal),
+    50%,
+    math.percentage(math.div(5, 6)),
+    math.percentage(math.div(1, 6)),
+    $c,
+    $bgc
+  );
 }
 
 @mixin arrow-down($c: currentColor, $bgc: #fff) {
-  @include radient-dynamic.arrow(180deg, 50%, math.percentage(math.div(5, 6)), 50%, math.percentage(math.div(5, 6) - vars.$lineWidthRelativeDiagonal), 50%, math.percentage(math.div(1, 6)), math.percentage(math.div(1, 6)), $c, $bgc);
+  @include radient-dynamic.arrow(
+    180deg,
+    50%,
+    math.percentage(math.div(5, 6)),
+    50%,
+    math.percentage(math.div(5, 6) - vars.$lineWidthRelativeDiagonal),
+    50%,
+    math.percentage(math.div(1, 6)),
+    math.percentage(math.div(1, 6)),
+    $c,
+    $bgc
+  );
 }
 
 @mixin arrow-right($c: currentColor, $bgc: #fff) {
-  @include radient-dynamic.arrow(90deg, math.percentage(math.div(5, 6)), 50%, math.percentage(math.div(5, 6) - vars.$lineWidthRelativeDiagonal), 50%, math.percentage(math.div(1, 6)), 50%, math.percentage(math.div(1, 6)), $c, $bgc);
+  @include radient-dynamic.arrow(
+    90deg,
+    math.percentage(math.div(5, 6)),
+    50%,
+    math.percentage(math.div(5, 6) - vars.$lineWidthRelativeDiagonal),
+    50%,
+    math.percentage(math.div(1, 6)),
+    50%,
+    math.percentage(math.div(1, 6)),
+    $c,
+    $bgc
+  );
 }
 
 @mixin arrow-left($c: currentColor, $bgc: #fff) {
-  @include radient-dynamic.arrow(270deg, math.percentage(math.div(1, 6)), 50%, math.percentage(math.div(1, 6) + vars.$lineWidthRelativeDiagonal), 50%, math.percentage(math.div(5, 6)), 50%, math.percentage(math.div(1, 6)), $c, $bgc);
+  @include radient-dynamic.arrow(
+    270deg,
+    math.percentage(math.div(1, 6)),
+    50%,
+    math.percentage(math.div(1, 6) + vars.$lineWidthRelativeDiagonal),
+    50%,
+    math.percentage(math.div(5, 6)),
+    50%,
+    math.percentage(math.div(1, 6)),
+    $c,
+    $bgc
+  );
 }
 
 @mixin ball($c: currentColor, $bgc: #fff) {
   background-image: #{paint.circleOutline(
-    $bgc,
-    vars.$transparent,
-    vars.$transparent,
-    0%,
-    50%,
-    35%
-  )},
-  #{paint.circleOutline(
+        $bgc,
+        vars.$transparent,
+        vars.$transparent,
+        0%,
+        50%,
+        35%
+      )},
+    #{paint.circleOutline(
         $bgc,
         vars.$transparent,
         vars.$transparent,
@@ -240,19 +324,33 @@
 }
 
 @mixin barcode($c: currentColor, $bgc: #fff) {
-  @include radient-dynamic.barcode(5 4 7 8 6 2 9 9 2 6 5 10 4 2 3 6 7, $c, $bgc);
+  @include radient-dynamic.barcode(
+    5 4 7 8 6 2 9 9 2 6 5 10 4 2 3 6 7,
+    $c,
+    $bgc
+  );
 }
 
 @mixin search($c: currentColor, $bgc: #fff) {
   background-image: #{paint.circleOutline(
-    $c,
-    $bgc,
-    vars.$transparent,
-    40%,
-    40%,
-    27%,
-    math.percentage(math.div(2, 7))
-  )}, #{paint.rectangle($c, $bgc, $bgc, 135deg, 27% + math.percentage(math.div(1, 3)), math.percentage(math.div(1, 24)), 39%, 50%)};
+        $c,
+        $bgc,
+        vars.$transparent,
+        40%,
+        40%,
+        27%,
+        math.percentage(math.div(2, 7))
+      )},
+    #{paint.rectangle(
+        $c,
+        $bgc,
+        $bgc,
+        135deg,
+        27% + math.percentage(math.div(1, 3)),
+        math.percentage(math.div(1, 24)),
+        39%,
+        50%
+      )};
 }
 
 @mixin trash($c: currentColor, $bgc: #fff) {
@@ -274,24 +372,24 @@
   $lengthOfPiece: 90deg;
   $space: math.div(360deg - ($lengthOfPiece * $numOfPiece), $numOfPiece);
 
-  background-image: 
-  radial-gradient(
-    50% 50%,
-    $bgc 15%,
-    $c 15% 30%,
-    $bgc 30% 45%,
-    vars.$transparent 45% 60%,
-    $bgc 60%
-  ),
-  conic-gradient(
-    from calc(0deg - $lengthOfPiece / 2) at 50% 50%,
-    $c $lengthOfPiece,
-    vars.$transparent $lengthOfPiece ($lengthOfPiece + $space),
-    $c ($lengthOfPiece + $space) (2 * $lengthOfPiece + $space),
-    vars.$transparent (2 * $lengthOfPiece + $space) (2 * $lengthOfPiece + 2 * $space),
-    $c (2 * $lengthOfPiece + 2 * $space) (3 * $lengthOfPiece + 2 * $space),
-    vars.$transparent (3 * $lengthOfPiece + 2 * $space),
-  );
+  background-image: radial-gradient(
+      50% 50%,
+      $bgc 15%,
+      $c 15% 30%,
+      $bgc 30% 45%,
+      vars.$transparent 45% 60%,
+      $bgc 60%
+    ),
+    conic-gradient(
+      from calc(0deg - $lengthOfPiece / 2) at 50% 50%,
+      $c $lengthOfPiece,
+      vars.$transparent $lengthOfPiece ($lengthOfPiece + $space),
+      $c ($lengthOfPiece + $space) (2 * $lengthOfPiece + $space),
+      vars.$transparent (2 * $lengthOfPiece + $space)
+        (2 * $lengthOfPiece + 2 * $space),
+      $c (2 * $lengthOfPiece + 2 * $space) (3 * $lengthOfPiece + 2 * $space),
+      vars.$transparent (3 * $lengthOfPiece + 2 * $space)
+    );
 }
 
 @mixin logo-outer($c: currentColor, $bgc: #fff) {
@@ -299,26 +397,27 @@
   $lengthOfPiece: 60deg;
   $space: math.div(360deg - ($lengthOfPiece * $numOfPiece), $numOfPiece);
 
-  background-image: 
-  radial-gradient(
-    50% 50%,
-    $bgc 15%,
-    $c 15% 30%,
-    $bgc 30% 60%,
-    vars.$transparent 60% 75%,
-    $bgc 75%
-  ),
-  conic-gradient(
-    from calc(0deg - $lengthOfPiece / 2) at 50% 50%,
-    $c $lengthOfPiece,
-    vars.$transparent $lengthOfPiece ($lengthOfPiece + $space),
-    $c ($lengthOfPiece + $space) (2 * $lengthOfPiece + $space),
-    vars.$transparent (2 * $lengthOfPiece + $space) (2 * $lengthOfPiece + 2 * $space),
-    $c (2 * $lengthOfPiece + 2 * $space) (3 * $lengthOfPiece + 2 * $space),
-    vars.$transparent (3 * $lengthOfPiece + 2 * $space) (3 * $lengthOfPiece + 3 * $space),
-    $c (3 * $lengthOfPiece + 3 * $space) (4 * $lengthOfPiece + 3 * $space),
-    vars.$transparent (4 * $lengthOfPiece + 3 * $space),
-  );
+  background-image: radial-gradient(
+      50% 50%,
+      $bgc 15%,
+      $c 15% 30%,
+      $bgc 30% 60%,
+      vars.$transparent 60% 75%,
+      $bgc 75%
+    ),
+    conic-gradient(
+      from calc(0deg - $lengthOfPiece / 2) at 50% 50%,
+      $c $lengthOfPiece,
+      vars.$transparent $lengthOfPiece ($lengthOfPiece + $space),
+      $c ($lengthOfPiece + $space) (2 * $lengthOfPiece + $space),
+      vars.$transparent (2 * $lengthOfPiece + $space)
+        (2 * $lengthOfPiece + 2 * $space),
+      $c (2 * $lengthOfPiece + 2 * $space) (3 * $lengthOfPiece + 2 * $space),
+      vars.$transparent (3 * $lengthOfPiece + 2 * $space)
+        (3 * $lengthOfPiece + 3 * $space),
+      $c (3 * $lengthOfPiece + 3 * $space) (4 * $lengthOfPiece + 3 * $space),
+      vars.$transparent (4 * $lengthOfPiece + 3 * $space)
+    );
 }
 
 @mixin add($c: currentColor, $bgc: #fff) {
@@ -326,7 +425,8 @@
 }
 
 @mixin add-circle($c: currentColor, $bgc: #fff) {
-  background-image: #{partials.circularOuline($c, $bgc)}, #{radient-dynamic.plus(12, 10, 10, 2, $c, $bgc)};
+  background-image: #{partials.circularOuline($c, $bgc)},
+    #{radient-dynamic.plus(12, 10, 10, 2, $c, $bgc)};
 }
 
 @mixin remove($c: currentColor, $bgc: #fff) {
@@ -334,7 +434,8 @@
 }
 
 @mixin remove-circle($c: currentColor, $bgc: #fff) {
-  background-image: #{partials.circularOuline($c, $bgc)}, #{radient-dynamic.minus(12, 10, 2, $c, $bgc)};
+  background-image: #{partials.circularOuline($c, $bgc)},
+    #{radient-dynamic.minus(12, 10, 2, $c, $bgc)};
 }
 
 @mixin info($c: currentColor, $bgc: #fff) {
@@ -342,7 +443,8 @@
 }
 
 @mixin info-circle($c: currentColor, $bgc: #fff) {
-  background-image: #{partials.circularOuline($c, $bgc)}, #{radient-dynamic.info(12, 2, $c, $bgc)};
+  background-image: #{partials.circularOuline($c, $bgc)},
+    #{radient-dynamic.info(12, 2, $c, $bgc)};
 }
 
 @mixin battery-empty($c: currentColor, $bgc: #fff) {
@@ -376,5 +478,3 @@
 @mixin battery-6($c: currentColor, $bgc: #fff) {
   background-image: #{radient-dynamic.battery($c, $bgc, math.div(6, 7))};
 }
-
-
