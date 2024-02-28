@@ -146,7 +146,7 @@
 
 @mixin bar-chart($c, $bgc) {
   $barWidth: null;
-  $bars: 40%, 2000%, 150%, 50%;
+  $bars: 40%, 2000%, 80%, 50%;
   $colors: currentColor;
   $horizontalSpacing: 5%;
   $verticalSpacing: 5%;
@@ -155,19 +155,26 @@
   $verticalPadding: 5%;
 
   @if (not $barWidth) {
-    $barWidth: math.div(100% - ((list.length($bars) + 1) * $horizontalSpacing),  list.length($bars));
+    $barWidth: math.div(
+      100% - ((list.length($bars) + 1) * $horizontalSpacing),
+      list.length($bars)
+    );
   }
-  
+
   $lastColor: list.nth($colors, list.length($colors));
   @while list.length($colors) < list.length($bars) {
     $colors: list.append($colors, $lastColor, $separator: comma);
   }
 
-  $maxBarWidth: math.div(100% - 2 * $horizontalPadding - $horizontalSpacing * (list.length($bars) - 1), list.length($bars));
+  $maxBarWidth: math.div(
+    100% - 2 * $horizontalPadding - $horizontalSpacing *
+      (list.length($bars) - 1),
+    list.length($bars)
+  );
   @if ($barWidth > $maxBarWidth) {
     $barWidth: $maxBarWidth;
   }
-  
+
   $maxBarHeight: 100% - 2 * $verticalPadding;
   @for $i from 1 through list.length($bars) {
     @if (list.nth($bars, $i) > $maxBarHeight) {
@@ -177,18 +184,30 @@
 
   $barsWithIndexAndColor: ();
   @for $i from 1 through list.length($bars) {
-    $barsWithIndexAndColor: list.append($barsWithIndexAndColor, ($i, list.nth($bars, $i), list.nth($colors, $i)));
+    $barsWithIndexAndColor: list.append(
+      $barsWithIndexAndColor,
+      ($i, list.nth($bars, $i), list.nth($colors, $i))
+    );
   }
-  $sortedBarsWithIndexAndColor: utils.reverse(utils.quick-sort-number($barsWithIndexAndColor, 2));
-  
+  $sortedBarsWithIndexAndColor: utils.reverse(
+    utils.quick-sort-number($barsWithIndexAndColor, 2)
+  );
+
   $barsRender: ();
-  $yPosition: 100% - $verticalSpacing;
+  $yPosition: $verticalSpacing;
   @each $barWidthIndexAndColor in $sortedBarsWithIndexAndColor {
     $i: list.nth($barWidthIndexAndColor, 1);
     $barHeight: list.nth($barWidthIndexAndColor, 2);
     $barColor: list.nth($barWidthIndexAndColor, 3);
-    $xPosition: ($i - 1) * ($barWidth + $horizontalSpacing) + $horizontalPadding;
-    $barsRender: list.append($barsRender, "#{paint.rectangle($barColor, transparent, $bgc, 90deg, $barWidth, $barHeight, $xPosition, $yPosition)}", $separator: comma);
+    $xPosition: ($i - 1) *
+      ($barWidth + $horizontalSpacing) +
+      $horizontalPadding;
+
+    $barsRender: list.append(
+      $barsRender,
+      "#{paint.rectangle($barColor, transparent, $bgc, 90deg, $barHeight, $barWidth, $xPosition, $verticalSpacing + (100% - $verticalSpacing - $barHeight))}",
+      $separator: comma
+    );
   }
 
   background-image: #{$barsRender};
@@ -230,7 +249,7 @@
   $pointEnd: $pointStart + $lineWidth;
 
   $iStart: $pointEnd + $lineWidth;
-  $iEnd: $iStart + 6; 
+  $iEnd: $iStart + 6;
 
   $info: "linear-gradient(180deg, #{$bgc} #{position.point($pointStart)}, #{vars.$transparent} #{position.point($pointStart)} #{position.point($pointEnd)}, #{$bgc} #{position.point($pointEnd)} #{position.point($iStart)}, #{vars.$transparent} #{position.point($iStart)} #{position.point($iEnd)}, #{$bgc} #{position.point($iEnd)})";
   $vertical: "linear-gradient(90deg, #{vars.$transparent} #{position.point($infoStart)}, #{$c} #{position.point($infoStart)}, #{$c} #{position.point($infoEnd)}, #{vars.$transparent} #{position.point($infoEnd)})";

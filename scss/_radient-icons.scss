@@ -326,6 +326,8 @@
 }
 
 @mixin search($c: currentColor, $bgc: #fff) {
+  $handleWidth: math.percentage(math.div(1, 12));
+
   background-image: #{paint.circleOutline(
         $c,
         $bgc,
@@ -340,10 +342,10 @@
         $bgc,
         $bgc,
         135deg,
+        $handleWidth,
         27% + math.percentage(math.div(1, 3)),
-        math.percentage(math.div(1, 24)),
         39%,
-        50%
+        50% - math.div($handleWidth, 2)
       )};
 }
 

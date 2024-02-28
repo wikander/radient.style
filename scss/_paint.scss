@@ -9,8 +9,6 @@
     $direction
   );
 
-  @debug "Bar start: #{$direction} #{$start} -> #{$normalizedStartDistanceFromMiddle}";
-
   $normalizedStart: 50% + $normalizedStartDistanceFromMiddle;
   $normalizedHeight: utils.fromLinearGradientDistance($height, $direction);
   $normalizedEnd: $normalizedStart + $normalizedHeight;
@@ -25,12 +23,12 @@
   $mainAngle,
   $width,
   $height,
-  $xPosition,
-  // Position of left bottom corner
-  $yPosition
+  // Length along main axes
+  $mainStart,
+  $crossStart
 ) {
   $crossAngle: $mainAngle + 90deg;
-  @return "#{segment(vars.$transparent, $bgcCross, $crossAngle, $height, $yPosition - $height)}, #{segment($c, $bgcMain, $mainAngle, $width, $xPosition)}";
+  @return "#{segment(vars.$transparent, $bgcCross, $crossAngle, $width, $crossStart)}, #{segment($c, $bgcMain, $mainAngle, $height, $mainStart)}";
 }
 
 @function circleFilled($c, $bgc, $positionX, $positionY, $radius) {
@@ -118,7 +116,7 @@
   $side1Start: 50% +
     utils.distanceToPointOnLinearFromHalf($startAngle, $positionX, $positionY);
 
-  $side1: "linear-gradient(#{$startAngle}, #{$bgc} #{$side1Start}, #{$c} #{utils.openUp($side1Start)})";
+  $side1: "linear-gradient(#{$startAngle}, #{$bgc} #{utils.openDown($side1Start)}, #{$c} #{$side1Start})";
 
   $endAngle: $direction + math.div($angle, 2) - 90;
   $side2Start: 50% +
