@@ -2,8 +2,7 @@
 @use "./utils.scss";
 @use "sass:math";
 
-// rename to segment
-@function barFilled($c, $bgc, $direction, $height, $start) {
+@function segment($c, $bgc, $direction, $height, $start) {
   $startDistanceFromMiddle: $start - 50%;
   $normalizedStartDistanceFromMiddle: utils.fromLinearGradientDistance(
     $startDistanceFromMiddle,
@@ -31,7 +30,7 @@
   $yPosition
 ) {
   $crossAngle: $mainAngle + 90deg;
-  @return "#{barFilled(vars.$transparent, $bgcCross, $crossAngle, $height, $yPosition - $height)}, #{barFilled($c, $bgcMain, $mainAngle, $width, $xPosition)}";
+  @return "#{segment(vars.$transparent, $bgcCross, $crossAngle, $height, $yPosition - $height)}, #{segment($c, $bgcMain, $mainAngle, $width, $xPosition)}";
 }
 
 @function circleFilled($c, $bgc, $positionX, $positionY, $radius) {

@@ -99,13 +99,7 @@
 
 @mixin menu($c: currentColor, $bgc: #fff) {
   $horizontalPadding: 12.5%;
-  background-image: #{paint.barFilled(
-        vars.$transparent,
-        $bgc,
-        90deg,
-        75%,
-        12.5%
-      )},
+  background-image: #{paint.segment(vars.$transparent, $bgc, 90deg, 75%, 12.5%)},
     linear-gradient(
       0deg,
       $bgc 25%,
