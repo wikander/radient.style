@@ -6,12 +6,20 @@
   @return $length;
 }
 
-@function openUp($length) {
-  @return calc($length + 1px);
+@function openUp($length, $on: true) {
+  @if $on {
+    @return calc($length + 1px);
+  } @else {
+    @return $length;
+  }
 }
 
-@function openDown($length) {
-  @return calc($length - 1px);
+@function openDown($length, $on: true) {
+  @if $on {
+    @return calc($length - 1px);
+  } @else {
+    @return $length;
+  }
 }
 
 @mixin layer($size: 100%) {
@@ -138,6 +146,26 @@
       $result: append($result, reverse(nth($list, abs($i)), $recursive));
     } @else {
       $result: append($result, nth($list, abs($i)));
+    }
+  }
+
+  @return $result;
+}
+
+@function to-string($list, $glue: "", $is-nested: false) {
+  $result: null;
+
+  @for $i from 1 through length($list) {
+    $e: nth($list, $i);
+
+    @if type-of($e) == list {
+      $result: $result#{to-string($e, $glue, true)};
+    } @else {
+      $result: if(
+        $i != length($list) or $is-nested,
+        $result#{$e}#{$glue},
+        $result#{$e}
+      );
     }
   }
 

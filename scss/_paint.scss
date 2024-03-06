@@ -2,7 +2,7 @@
 @use "./utils.scss";
 @use "sass:math";
 
-@function segment($c, $bgc, $direction, $height, $start) {
+@function segment($c, $bgc, $direction, $height, $start, $antiAliased: false) {
   $startDistanceFromMiddle: $start - 50%;
   $normalizedStartDistanceFromMiddle: utils.fromLinearGradientDistance(
     $startDistanceFromMiddle,
@@ -13,7 +13,12 @@
   $normalizedHeight: utils.fromLinearGradientDistance($height, $direction);
   $normalizedEnd: $normalizedStart + $normalizedHeight;
 
-  @return "linear-gradient(#{$direction}, #{$bgc} #{$normalizedStart}, #{$c} #{$normalizedStart} #{$normalizedEnd}, #{$bgc} #{$normalizedEnd})";
+  @return linear-gradient(
+    #{$direction},
+    $bgc #{utils.openDown($normalizedStart, $antiAliased)},
+    $c #{$normalizedStart} #{$normalizedEnd},
+    $bgc #{utils.openUp($normalizedEnd, $antiAliased)}
+  );
 }
 
 @function rectangle(
@@ -25,10 +30,19 @@
   $height,
   // Length along main axes
   $mainStart,
-  $crossStart
+  $crossStart,
+  $antiAliased: false
 ) {
   $crossAngle: $mainAngle + 90deg;
-  @return "#{segment(vars.$transparent, $bgcCross, $crossAngle, $width, $crossStart)}, #{segment($c, $bgcMain, $mainAngle, $height, $mainStart)}";
+  @return segment(
+      vars.$transparent,
+      $bgcCross,
+      $crossAngle,
+      $width,
+      $crossStart,
+      $antiAliased
+    ),
+    segment($c, $bgcMain, $mainAngle, $height, $mainStart, $antiAliased);
 }
 
 @function circleFilled($c, $bgc, $positionX, $positionY, $radius) {
@@ -107,7 +121,17 @@
   $radiusY,
   $lineWidth: math.percentage(vars.$lineWidthRelative)
 ) {
-  @return "radial-gradient(#{$radiusX} #{$radiusY} at #{$positionX} #{$positionY}, #{$bgc1} #{100% - $lineWidth}, #{$c} #{100% - $lineWidth} calc(100% - 1px), #{$bgc2} 100%)";
+  $relativeCanvasSize: math.div(utils.strip-unit($radiusX) * 2, 100);
+  $localLineWidth: math.percentage(
+    math.div(math.div(utils.strip-unit($lineWidth), 100), $relativeCanvasSize)
+  );
+
+  @return radial-gradient(
+    $radiusX $radiusY at $positionX $positionY,
+    $bgc1 #{utils.openDown(100% - $localLineWidth)},
+    $c #{100% - $localLineWidth} 100%,
+    $bgc2 utils.openUp(100%)
+  );
 }
 
 @function sector($c, $bgc, $direction, $angle, $positionX, $positionY) {
