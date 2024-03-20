@@ -19,6 +19,56 @@
     );
 }
 
+@mixin pieFull($starAngle, $pieRadius, $pieces, $centerHole, $c, $bgc) {
+  // pieces is pairs of colors and angles for each pie-piece in the diagram
+
+  $renderedPieces: ();
+
+  @for $i from 1 through list.length($pieces) {
+    $currentPiece: list.nth($pieces, $i);
+    $currentColor: list.nth($currentPiece, 1);
+    $currentAngle: list.nth($currentPiece, 2);
+
+    $renderedPiece: ();
+
+    @debug Length of renderedoiece #{list.length($renderedPiece)};
+
+    @if ($i == 1) {
+      $renderedPiece: list.append($renderedPiece, $currentColor $currentAngle);
+    } @else {
+      $previousPiece: list.nth($pieces, $i - 1);
+      $previousAngle: list.nth($previousPiece, 2);
+      @if ($i == list.length($pieces)) {
+        $renderedPiece: list.append(
+          $renderedPiece,
+          $currentColor $previousAngle,
+          $separator: comma
+        );
+      } @else {
+        $renderedPiece: list.append(
+          $renderedPiece,
+          $currentColor $previousAngle $currentAngle,
+          $separator: comma
+        );
+      }
+    }
+
+    $renderedPieces: list.join(
+      $renderedPieces,
+      $renderedPiece,
+      $separator: comma
+    );
+  }
+
+  background-image: radial-gradient(
+      $pieRadius $pieRadius,
+      $bgc utils.openDown($centerHole),
+      transparent $centerHole utils.openDown(100%),
+      $bgc 100%
+    ),
+    conic-gradient(from $starAngle at 50% 50%, $renderedPieces);
+}
+
 @mixin barcode($pattern, $c, $bgc) {
   $totalNumberOfModules: 95;
 

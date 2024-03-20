@@ -17,6 +17,10 @@
   @include radient-icons.pie();
 }
 
+.pie-full {
+  @include radient-icons.pie-full();
+}
+
 .pie-periphery {
   @include radient-icons.pie-periphery();
 }
@@ -147,8 +151,33 @@
 .battery-5 {
   @include radient-icons.battery-5();
 }
+
 .battery-6 {
   @include radient-icons.battery-6();
+}
+
+.man {
+  @include radient-icons.man();
+}
+
+.woman {
+  @include radient-icons.woman();
+}
+
+.player-stop {
+  @include radient-icons.player-stop();
+}
+
+.player-play {
+  @include radient-icons.player-play();
+}
+
+.player-skip-next {
+  @include radient-icons.player-skip-next();
+}
+
+.player-pause {
+  @include radient-icons.player-pause();
 }
 
 .blaj {

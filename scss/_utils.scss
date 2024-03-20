@@ -44,6 +44,7 @@
 
 // Make it shorter
 @function fromLinearGradientDistance($distance, $angle) {
+  @debug "fromLinearGradientDistance: #{$distance} #{$angle}";
   @return math.div($distance, linearGradientLength($angle));
 }
 
@@ -96,6 +97,10 @@
 
   @if ($startPositionModifierDirection == -1) {
     $v: $v - 180;
+  }
+
+  @if (strip-unit($v) == 0) {
+    @return math.abs(50 - $y) * $startPositionModifierDirection;
   }
 
   $a: math.div($x, math.sin($v));

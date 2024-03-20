@@ -60,34 +60,15 @@
   $positionY,
   $angle,
   $height,
-  $direction: 180deg
-) {
-  $startPosition: 50% +
-    utils.distanceToPointOnLinearFromHalf($direction, $positionX, $positionY);
-
-  $startAngle: $direction - math.div($angle, 2);
-  $normalizedHeight: utils.fromLinearGradientDistance($height, $direction);
-
-  $cone: "conic-gradient(from #{$startAngle} at #{$positionX} #{$positionY}, #{$color} #{$angle}, #{$bgc} #{$angle})";
-  $height: "linear-gradient(#{$direction}, #{vars.$transparent} #{$startPosition + $normalizedHeight}, #{$bgc} #{$startPosition + $normalizedHeight})";
-  @return "#{$height}, #{$cone}";
-}
-
-@function triangleFilledAntiAliased(
-  $color,
-  $bgc,
-  $positionX,
-  $positionY,
-  $angle,
-  $height,
-  $direction: 180deg
+  $direction: 180deg,
+  $antiAliased: false
 ) {
   $startPosition: 50% +
     utils.distanceToPointOnLinearFromHalf($direction, $positionX, $positionY);
   $normalizedHeight: utils.fromLinearGradientDistance($height, $direction);
-  $height: "linear-gradient(#{$direction}, #{vars.$transparent} #{$startPosition + $normalizedHeight}, #{$bgc} #{utils.openUp($startPosition + $normalizedHeight)})";
+  $height: "linear-gradient(#{$direction}, #{vars.$transparent} #{$startPosition + $normalizedHeight}, #{$bgc} #{utils.openUp($startPosition + $normalizedHeight, $antiAliased)})";
 
-  @return "#{$height}, #{sector($color, $bgc, $direction, $angle, $positionX, $positionY)}";
+  @return "#{$height}, #{sector($color, $bgc, $direction, $angle, $positionX, $positionY, $antiAliased)}";
 }
 
 @function circleOutline(
@@ -97,7 +78,8 @@
   $positionX,
   $positionY,
   $radius,
-  $lineWidth: math.percentage(vars.$lineWidthRelative)
+  $lineWidth: math.percentage(vars.$lineWidthRelative),
+  $antiAliased: false
 ) {
   @return ovalOutline(
     $c,
@@ -107,7 +89,8 @@
     $positionY,
     $radius,
     $radius,
-    $lineWidth
+    $lineWidth,
+    $antiAliased
   );
 }
 
@@ -119,7 +102,8 @@
   $positionY,
   $radiusX,
   $radiusY,
-  $lineWidth: math.percentage(vars.$lineWidthRelative)
+  $lineWidth: math.percentage(vars.$lineWidthRelative),
+  $antiAliased: false
 ) {
   $relativeCanvasSize: math.div(utils.strip-unit($radiusX) * 2, 100);
   $localLineWidth: math.percentage(
@@ -128,24 +112,32 @@
 
   @return radial-gradient(
     $radiusX $radiusY at $positionX $positionY,
-    $bgc1 #{utils.openDown(100% - $localLineWidth)},
+    $bgc1 #{utils.openDown(100% - $localLineWidth, $antiAliased)},
     $c #{100% - $localLineWidth} 100%,
-    $bgc2 utils.openUp(100%)
+    $bgc2 utils.openUp(100%, $antiAliased)
   );
 }
 
-@function sector($c, $bgc, $direction, $angle, $positionX, $positionY) {
+@function sector(
+  $c,
+  $bgc,
+  $direction,
+  $angle,
+  $positionX,
+  $positionY,
+  $antiAliased: false
+) {
   $startAngle: $direction - math.div($angle, 2) + 90;
 
   $side1Start: 50% +
     utils.distanceToPointOnLinearFromHalf($startAngle, $positionX, $positionY);
 
-  $side1: "linear-gradient(#{$startAngle}, #{$bgc} #{utils.openDown($side1Start)}, #{$c} #{$side1Start})";
+  $side1: "linear-gradient(#{$startAngle}, #{$bgc} #{utils.openDown($side1Start, $antiAliased)}, #{$c} #{$side1Start})";
 
   $endAngle: $direction + math.div($angle, 2) - 90;
   $side2Start: 50% +
     utils.distanceToPointOnLinearFromHalf($endAngle, $positionX, $positionY);
 
-  $side2: "linear-gradient(#{$endAngle}, #{$bgc} #{utils.openDown($side2Start)}, #{vars.$transparent} #{$side2Start})";
+  $side2: "linear-gradient(#{$endAngle}, #{$bgc} #{utils.openDown($side2Start, $antiAliased)}, #{vars.$transparent} #{$side2Start})";
   @return "#{$side2}, #{$side1}";
 }

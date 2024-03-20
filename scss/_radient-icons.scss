@@ -47,6 +47,17 @@
   @include radient-dynamic.pie(0deg, var(--pieceAngle), 50%, 0%, $c, $bgc);
 }
 
+@mixin pie-full($c: currentColor, $bgc: #fff) {
+  @include radient-dynamic.pieFull(
+    0deg,
+    50%,
+    ((red, 90deg), (green, 180deg), (blue, 270deg), (orange, 360deg)),
+    0%,
+    $c,
+    $bgc
+  );
+}
+
 @mixin pie-periphery($c: currentColor, $bgc: #fff) {
   @include radient-dynamic.pie(0deg, var(--pieceAngle), 50%, 84%, $c, $bgc);
 }
@@ -474,4 +485,136 @@
 
 @mixin battery-6($c: currentColor, $bgc: #fff) {
   background-image: #{radient-dynamic.battery($c, $bgc, math.div(6, 7))};
+}
+
+@mixin man($c: currentColor, $bgc: #fff) {
+  background-image: #{paint.rectangle(
+        $c,
+        vars.$transparent,
+        $bgc,
+        0,
+        position.point(8),
+        position.point(8),
+        position.point(9),
+        position.point(8)
+      )},
+    #{paint.rectangle(
+        $c,
+        vars.$transparent,
+        $bgc,
+        0,
+        position.point(4),
+        position.point(15),
+        position.point(2),
+        position.point(10)
+      )},
+    #{paint.circleFilled(
+        $c,
+        $bgc,
+        position.point(12),
+        position.point(4),
+        position.point(2)
+      )};
+}
+
+@mixin woman($c: currentColor, $bgc: #fff) {
+  background-image: #{paint.circleFilled(
+        $c,
+        vars.$transparent,
+        position.point(12),
+        position.point(4),
+        position.point(2)
+      )},
+    #{paint.rectangle(
+        $c,
+        vars.$transparent,
+        $bgc,
+        90deg,
+        position.point(15),
+        position.point(4),
+        position.point(10),
+        position.point(7)
+      )},
+    #{paint.triangleFilled(
+        $c,
+        $bgc,
+        position.point(12),
+        position.point(7),
+        60deg,
+        position.point(9),
+        180deg,
+        true
+      )};
+}
+
+@mixin player-stop($c: currentColor, $bgc: #fff) {
+  background-image: #{paint.rectangle(
+      $c,
+      $bgc,
+      $bgc,
+      0deg,
+      position.point(12),
+      position.point(12),
+      position.point(6),
+      position.point(6)
+    )};
+}
+
+@mixin player-play($c: currentColor, $bgc: #fff) {
+  background-image: #{paint.triangleFilled(
+      $c,
+      $bgc,
+      position.point(19),
+      position.point(12),
+      64deg,
+      position.point(11),
+      -90deg,
+      true
+    )};
+}
+
+@mixin player-skip-next($c: currentColor, $bgc: #fff) {
+  background-image: #{paint.rectangle(
+        $c,
+        vars.$transparent,
+        $bgc,
+        90deg,
+        position.point(12),
+        position.point(2),
+        position.point(16.5),
+        position.point(6)
+      )},
+    #{paint.triangleFilled(
+        $c,
+        $bgc,
+        position.point(14.5),
+        position.point(12),
+        64deg,
+        position.point(9),
+        -90deg,
+        true
+      )};
+}
+
+@mixin player-pause($c: currentColor, $bgc: #fff) {
+  background-image: #{paint.rectangle(
+        $c,
+        vars.$transparent,
+        $bgc,
+        90deg,
+        position.point(14),
+        position.point(6),
+        position.point(5),
+        position.point(5)
+      )},
+    #{paint.rectangle(
+        $c,
+        vars.$transparent,
+        $bgc,
+        90deg,
+        position.point(14),
+        position.point(6),
+        position.point(13),
+        position.point(5)
+      )};
 }
