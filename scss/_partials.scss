@@ -1,5 +1,15 @@
 @use "./position.scss";
 @use "./vars.scss";
+@use "./paint.scss";
 @function circularOuline($c: currentColor, $bgc: #fff) {
-  @return "radial-gradient(50% 50%, #{vars.$transparent} #{position.pointOpenDown(16)}, #{$c} #{position.point(16)} #{position.point(20)}, #{vars.$transparent} #{position.pointOpenUp(20)})";
+  @return paint.circleOutline(
+    $c,
+    vars.$transparent,
+    $bgc,
+    50%,
+    50%,
+    position.point(10),
+    position.point(4),
+    true
+  );
 }

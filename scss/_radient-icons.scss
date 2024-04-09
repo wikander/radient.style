@@ -21,21 +21,30 @@
 }
 
 @mixin cloud($c: currentColor, $bgc: #fff) {
-  background-image: linear-gradient(0deg, #{$bgc} 38%, #{vars.$transparent} 38%),
-    radial-gradient(
-      circle at 35% 65%,
-      #{$c} 25%,
-      #{vars.$transparent} #{utils.openUp(25%)}
+  background-image: linear-gradient(
+      0deg,
+      #{$bgc} position.point(4),
+      #{vars.$transparent} position.point(4)
     ),
     radial-gradient(
-      circle at 65% 65%,
-      #{$c} 25%,
-      #{vars.$transparent} #{utils.openUp(25%)}
+      circle at 50% 70%,
+      #{$c} 27%,
+      #{vars.$transparent} #{utils.openUp(27%)}
     ),
     radial-gradient(
-      circle at 50% 47%,
-      #{$c} 25%,
-      #{vars.$transparent} #{utils.openUp(25%)}
+      circle at 30% 60%,
+      #{$c} 27%,
+      #{vars.$transparent} #{utils.openUp(27%)}
+    ),
+    radial-gradient(
+      circle at 75% 65%,
+      #{$c} 21%,
+      #{vars.$transparent} #{utils.openUp(21%)}
+    ),
+    radial-gradient(
+      circle at 50% 48%,
+      #{$c} 42%,
+      #{vars.$transparent} #{utils.openUp(42%)}
     );
 }
 
@@ -87,66 +96,79 @@
 }
 
 @mixin wifi($c: currentColor, $bgc: #fff) {
-  $centerRadius: 15%;
-  $lineWidth: 12%;
+  $centerRadius: 35%;
+  $lineWidth: 23.5%;
+
+  $firstEnd: $centerRadius;
+  $secondStart: $centerRadius + $lineWidth;
+  $secondEnd: $centerRadius + ($lineWidth * 2);
+  $thirdStart: $centerRadius + ($lineWidth * 3);
+  $thirdEnd: $centerRadius + ($lineWidth * 4);
 
   background-image: conic-gradient(
-      from 45deg at bottom,
+      from 45deg at 50% 83%,
       $bgc 270deg,
       transparent 270deg
     ),
     radial-gradient(
-      50% 50% at bottom,
-      $c $centerRadius,
-      $bgc $centerRadius ($centerRadius + $lineWidth),
-      $c ($centerRadius + $lineWidth) ($centerRadius + ($lineWidth * 2)),
-      $bgc ($centerRadius + ($lineWidth * 2)) ($centerRadius + ($lineWidth * 3)),
-      $c ($centerRadius + ($lineWidth * 3)) ($centerRadius + ($lineWidth * 4)),
-      $bgc ($centerRadius + ($lineWidth * 4)) ($centerRadius + ($lineWidth * 5)),
-      $c ($centerRadius + ($lineWidth * 5)) ($centerRadius + ($lineWidth * 6)),
-      $bgc ($centerRadius + ($lineWidth * 6)) ($centerRadius + ($lineWidth * 7))
+      50% 50% at 50% 83%,
+      $c $firstEnd,
+      $bgc utils.openUp($firstEnd) utils.openDown($secondStart),
+      $c $secondStart $secondEnd,
+      $bgc utils.openUp($secondEnd) utils.openDown($thirdStart),
+      $c $thirdStart $thirdEnd,
+      $bgc utils.openUp($thirdEnd)
     );
 }
 
 @mixin menu($c: currentColor, $bgc: #fff) {
-  $horizontalPadding: 12.5%;
-  background-image: #{paint.segment(vars.$transparent, $bgc, 90deg, 75%, 12.5%)},
-    linear-gradient(
-      0deg,
-      $bgc 25%,
-      $c 25% (25% + math.percentage(vars.$lineWidthRelative)),
-      $bgc (25% + math.percentage(vars.$lineWidthRelative))
-        (25% + math.percentage(vars.$lineWidthRelative) + 12.5%),
-      $c (25% + math.percentage(vars.$lineWidthRelative) + 12.5%)
-        (
-          25% + math.percentage(vars.$lineWidthRelative) + 12.5% +
-            math.percentage(vars.$lineWidthRelative)
-        ),
-      $bgc
-        (
-          25% + math.percentage(vars.$lineWidthRelative) + 12.5% +
-            math.percentage(vars.$lineWidthRelative)
-        )
-        (
-          25% + math.percentage(vars.$lineWidthRelative) + 12.5% +
-            math.percentage(vars.$lineWidthRelative) + 12.5%
-        ),
-      $c
-        (
-          25% + math.percentage(vars.$lineWidthRelative) + 12.5% +
-            math.percentage(vars.$lineWidthRelative) + 12.5%
-        )
-        (
-          25% + math.percentage(vars.$lineWidthRelative) + 12.5% +
-            math.percentage(vars.$lineWidthRelative) + 12.5% +
-            math.percentage(vars.$lineWidthRelative)
-        ),
-      $bgc
-        (
-          25% + math.percentage(vars.$lineWidthRelative) + 12.5% +
-            math.percentage(vars.$lineWidthRelative) + 12.5% +
-            math.percentage(vars.$lineWidthRelative)
-        )
+  background-image: paint.stripes(
+      $bgc,
+      90deg,
+      [(position.point(3), position.point(18), vars.$transparent)],
+      true
+    ),
+    paint.stripes(
+      $bgc,
+      0,
+      [(position.point(6), position.point(2), $c),
+      (position.point(11), position.point(2), $c),
+      (position.point(16), position.point(2), $c)],
+      true
+    );
+}
+
+@mixin list($c: currentColor, $bgc: #fff) {
+  background-image: paint.stripes(
+      $bgc,
+      90deg,
+      [(position.point(3), position.point(2), vars.$transparent),
+      (position.point(7), position.point(14), vars.$transparent)],
+      true
+    ),
+    paint.stripes(
+      $bgc,
+      0,
+      [(position.point(7), position.point(2), $c),
+      (position.point(11), position.point(2), $c),
+      (position.point(15), position.point(2), $c)],
+      true
+    );
+}
+
+@mixin drag-handle($c: currentColor, $bgc: #fff) {
+  background-image: paint.stripes(
+      $bgc,
+      90deg,
+      [(position.point(4), position.point(16), vars.$transparent)],
+      true
+    ),
+    paint.stripes(
+      $bgc,
+      0,
+      [(position.point(9), position.point(2), $c),
+      (position.point(13), position.point(2), $c)],
+      true
     );
 }
 
@@ -325,7 +347,7 @@
         50%,
         35%
       )},
-    #{paint.circleFilled($c, $bgc, 50%, 50%, math.percentage(math.div(5, 12)))};
+    #{paint.circle($c, $bgc, 50%, 50%, math.percentage(math.div(5, 12)))};
 }
 
 @mixin barcode($c: currentColor, $bgc: #fff) {
@@ -508,7 +530,7 @@
         position.point(2),
         position.point(10)
       )},
-    #{paint.circleFilled(
+    #{paint.circle(
         $c,
         $bgc,
         position.point(12),
@@ -518,7 +540,7 @@
 }
 
 @mixin woman($c: currentColor, $bgc: #fff) {
-  background-image: #{paint.circleFilled(
+  background-image: #{paint.circle(
         $c,
         vars.$transparent,
         position.point(12),
@@ -535,7 +557,7 @@
         position.point(10),
         position.point(7)
       )},
-    #{paint.triangleFilled(
+    #{paint.triangle(
         $c,
         $bgc,
         position.point(12),
@@ -561,7 +583,7 @@
 }
 
 @mixin player-play($c: currentColor, $bgc: #fff) {
-  background-image: #{paint.triangleFilled(
+  background-image: #{paint.triangle(
       $c,
       $bgc,
       position.point(19),
@@ -584,7 +606,7 @@
         position.point(16.5),
         position.point(6)
       )},
-    #{paint.triangleFilled(
+    #{paint.triangle(
         $c,
         $bgc,
         position.point(14.5),
@@ -617,4 +639,267 @@
         position.point(13),
         position.point(5)
       )};
+}
+
+@mixin send($c: currentColor, $bgc: #fff) {
+  $bigAngle: 22.75deg;
+  $smallAngle: 9deg;
+
+  background-image: linear-gradient(
+      270deg,
+      vars.$transparent,
+      vars.$transparent position.point(22),
+      $bgc position.point(22)
+    ),
+    linear-gradient(
+      calc(270deg + $bigAngle + 90deg),
+      vars.$transparent,
+      vars.$transparent 63.5%,
+      $bgc utils.openUp(63.5%)
+    ),
+    linear-gradient(
+      calc(270deg - $bigAngle - 90deg),
+      vars.$transparent,
+      vars.$transparent 63.5%,
+      $bgc utils.openUp(63.5%)
+    ),
+    linear-gradient(
+      calc(270deg - $smallAngle - 90deg),
+      vars.$transparent,
+      vars.$transparent utils.openDown(52.5%),
+      $c 52.5%
+    ),
+    linear-gradient(
+      calc(270deg + $smallAngle + 90deg),
+      $bgc,
+      $bgc utils.openDown(52.5%),
+      vars.$transparent 52.5%
+    ),
+    linear-gradient(
+      calc(270deg + $bigAngle + 90deg),
+      $c,
+      $c 63.5%,
+      $bgc utils.openUp(63.5%)
+    );
+}
+
+@mixin calendar($c: currentColor, $bgc: #fff) {
+  background-image: #{paint.circle(
+        $c,
+        vars.$transparent,
+        position.point(18),
+        position.point(3),
+        position.point(1.5)
+      )},
+    #{paint.circle(
+        $c,
+        vars.$transparent,
+        position.point(6),
+        position.point(3),
+        position.point(1.5)
+      )},
+    #{paint.stripes(
+        $bgc,
+        90deg,
+        [(position.point(2), position.point(20), vars.$transparent)]
+      )},
+    #{paint.stripes(
+        $bgc,
+        0,
+        [(position.point(1), position.point(2), $c),
+        (position.point(16), position.point(5), $c, vars.$transparent)]
+      )},
+    #{paint.stripes(
+        $bgc,
+        90deg,
+        [(position.point(2), position.point(2), $c),
+        (position.point(20), position.point(2), $c)]
+      )};
+}
+
+@mixin credit-card($c: currentColor, $bgc: #fff) {
+  background-image: #{paint.stripes(
+        $bgc,
+        90deg,
+        [(position.point(2), position.point(20), vars.$transparent)]
+      )},
+    #{paint.stripes(
+        $bgc,
+        0,
+        [(position.point(4), position.point(2), $c),
+        (position.point(12), position.point(4), $c, vars.$transparent),
+        (position.point(18), position.point(2), $c, vars.$transparent)]
+      )},
+    #{paint.stripes(
+        $bgc,
+        90deg,
+        [(position.point(2), position.point(2), $c),
+        (position.point(20), position.point(2), $c)]
+      )};
+}
+
+@mixin accessibility($c: currentColor, $bgc: #fff) {
+  background-image: #{paint.circle(
+        $c,
+        vars.$transparent,
+        position.point(12),
+        position.point(4),
+        position.point(2)
+      )},
+    #{paint.stripes(
+        $bgc,
+        90deg,
+        [(position.point(3), position.point(18), vars.$transparent)]
+      )},
+    #{paint.stripes(
+        $bgc,
+        180deg,
+        [(position.point(7), position.point(2), $c),
+        (position.point(22), position.point(2), $bgc, vars.$transparent)]
+      )},
+    #{paint.stripes(
+        $bgc,
+        90deg,
+        [(position.point(9), position.point(2), $c),
+        (position.point(13), position.point(2), $c, vars.$transparent)]
+      )},
+    #{paint.rectangle(
+        $c,
+        $bgc,
+        $bgc,
+        0,
+        position.point(6),
+        position.point(9),
+        position.point(8),
+        position.point(9)
+      )};
+}
+
+@mixin pyramid-arrow-right($c: currentColor, $bgc: #fff) {
+  background-image: #{paint.triangle(
+      $c,
+      $bgc,
+      position.point(15),
+      position.point(12),
+      90deg,
+      position.point(5),
+      270deg,
+      true
+    )};
+}
+
+@mixin pyramid-arrow-left($c: currentColor, $bgc: #fff) {
+  background-image: #{paint.triangle(
+      $c,
+      $bgc,
+      position.point(9),
+      position.point(12),
+      90deg,
+      position.point(5),
+      90deg,
+      true
+    )};
+}
+
+@mixin pyramid-arrow-up($c: currentColor, $bgc: #fff) {
+  background-image: #{paint.triangle(
+      $c,
+      $bgc,
+      position.point(12),
+      position.point(9),
+      90deg,
+      position.point(5),
+      180deg,
+      true
+    )};
+}
+
+@mixin pyramid-arrow-down($c: currentColor, $bgc: #fff) {
+  background-image: #{paint.triangle(
+      $c,
+      $bgc,
+      position.point(12),
+      position.point(15),
+      90deg,
+      position.point(5),
+      0deg,
+      true
+    )};
+}
+
+@mixin house($c: currentColor, $bgc: #fff) {
+  background-image: linear-gradient(
+      -37deg,
+      vars.$transparent,
+      vars.$transparent utils.openDown(72%),
+      $bgc 72%
+    ),
+    linear-gradient(
+      37deg,
+      vars.$transparent,
+      vars.$transparent utils.openDown(72%),
+      $bgc 72%
+    ),
+    linear-gradient(
+      0,
+      $bgc,
+      $bgc position.point(3),
+      vars.$transparent position.point(3)
+    ),
+    paint.stripes(
+      vars.$transparent,
+      270deg,
+      [(position.point(4), position.point(5), $c),
+      (position.point(15), position.point(5), $c)],
+      true
+    ),
+    linear-gradient(
+      0,
+      $bgc,
+      $bgc position.point(10),
+      vars.$transparent position.point(10)
+    ),
+    paint.stripes(
+      vars.$transparent,
+      270deg,
+      [(position.point(4), position.point(16), $c)],
+      true
+    );
+}
+
+@function rayPair($angle, $c, $bgc) {
+  @return paint.stripes(
+      $bgc,
+      $angle,
+      [(position.point(1), position.point(22), vars.$transparent)],
+      true
+    ),
+    paint.stripes(
+      $bgc,
+      $angle + 90deg,
+      [(position.point(1), position.point(10), vars.$transparent),
+      (position.point(11), position.point(2), $c),
+      (position.point(13), position.point(10), vars.$transparent)],
+      true
+    ),
+    paint.stripes(
+      vars.$transparent,
+      $angle,
+      [(position.point(11), position.point(2), $c)],
+      true
+    );
+}
+
+@mixin sun($c: currentColor, $bgc: #fff) {
+  background-image: #{paint.circleOutline(
+        $bgc,
+        $c,
+        vars.$transparent,
+        50%,
+        50%,
+        position.point(7),
+        position.point(4),
+        true
+      )},
+    rayPair(45deg, $c, $bgc), rayPair(0, $c, $bgc);
 }

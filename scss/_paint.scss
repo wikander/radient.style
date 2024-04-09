@@ -1,6 +1,71 @@
 @use "./vars.scss";
 @use "./utils.scss";
 @use "sass:math";
+@use "sass:list";
+
+@function stripes($bgc, $direction, $stripes, $antiAliased: false) {
+  // stripes is a list of quadruples of start position, height of a stripe, color of the stripe and (optional) background color before the stripe (after previous stripe).
+
+  $renderedStripes: ();
+
+  $previousEnd: null;
+
+  @for $i from 1 through list.length($stripes) {
+    $currentStripe: list.nth($stripes, $i);
+
+    $currentStart: list.nth($currentStripe, 1);
+    $currentHeight: list.nth($currentStripe, 2);
+    $currentColor: list.nth($currentStripe, 3);
+    $currentBackgroundColor: $bgc;
+
+    @if list.length($currentStripe) > 3 {
+      $currentBackgroundColor: list.nth($currentStripe, 4);
+    }
+
+    $startDistanceFromMiddle: $currentStart - 50%;
+    $normalizedStartDistanceFromMiddle: utils.fromLinearGradientDistance(
+      $startDistanceFromMiddle,
+      $direction
+    );
+
+    $normalizedStart: 50% + $normalizedStartDistanceFromMiddle;
+    $normalizedHeight: utils.fromLinearGradientDistance(
+      $currentHeight,
+      $direction
+    );
+    $normalizedEnd: $normalizedStart + $normalizedHeight;
+
+    @if ($i == 1) {
+      $renderedStripes: list.append(
+        $renderedStripes,
+        (
+          $currentBackgroundColor $normalizedStart,
+          $currentColor $normalizedStart $normalizedEnd
+        )
+      );
+    } @else {
+      $renderedStripes: list.append(
+        $renderedStripes,
+        (
+          $currentBackgroundColor $previousEnd $normalizedStart,
+          $currentColor $normalizedStart $normalizedEnd
+        )
+      );
+    }
+
+    @if ($i == list.length($stripes)) {
+      $renderedStripes: list.append(
+        $renderedStripes,
+        $bgc $normalizedEnd,
+        $separator: comma
+      );
+    }
+
+    $previousEnd: $normalizedEnd;
+  }
+
+  @return linear-gradient(#{$direction}, $renderedStripes);
+}
 
 @function segment($c, $bgc, $direction, $height, $start, $antiAliased: false) {
   $startDistanceFromMiddle: $start - 50%;
@@ -34,26 +99,24 @@
   $antiAliased: false
 ) {
   $crossAngle: $mainAngle + 90deg;
-  @return segment(
-      vars.$transparent,
+  @return stripes(
       $bgcCross,
       $crossAngle,
-      $width,
-      $crossStart,
+      [($crossStart, $width, vars.$transparent)],
       $antiAliased
     ),
-    segment($c, $bgcMain, $mainAngle, $height, $mainStart, $antiAliased);
+    stripes($bgcMain, $mainAngle, [($mainStart, $height, $c)], $antiAliased);
 }
 
-@function circleFilled($c, $bgc, $positionX, $positionY, $radius) {
-  @return ovalFilled($c, $bgc, $positionX, $positionY, $radius, $radius);
+@function circle($c, $bgc, $positionX, $positionY, $radius) {
+  @return oval($c, $bgc, $positionX, $positionY, $radius, $radius);
 }
 
-@function ovalFilled($c, $bgc, $positionX, $positionY, $radiusX, $radiusY) {
+@function oval($c, $bgc, $positionX, $positionY, $radiusX, $radiusY) {
   @return "radial-gradient(#{$radiusX} #{$radiusY} at #{$positionX} #{$positionY}, #{$c} calc(100% - 1px), #{$bgc} 100%)";
 }
 
-@function triangleFilled(
+@function triangle(
   $color,
   $bgc,
   $positionX,

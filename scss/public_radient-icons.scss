@@ -37,6 +37,14 @@
   @include radient-icons.menu();
 }
 
+.list {
+  @include radient-icons.list();
+}
+
+.drag-handle {
+  @include radient-icons.drag-handle();
+}
+
 .gs1 {
   @include radient-icons.gs1();
 }
@@ -178,6 +186,46 @@
 
 .player-pause {
   @include radient-icons.player-pause();
+}
+
+.send {
+  @include radient-icons.send();
+}
+
+.calendar {
+  @include radient-icons.calendar();
+}
+
+.credit-card {
+  @include radient-icons.credit-card();
+}
+
+.accessibility {
+  @include radient-icons.accessibility();
+}
+
+.pyramid-arrow-right {
+  @include radient-icons.pyramid-arrow-right();
+}
+
+.pyramid-arrow-left {
+  @include radient-icons.pyramid-arrow-left();
+}
+
+.pyramid-arrow-up {
+  @include radient-icons.pyramid-arrow-up();
+}
+
+.pyramid-arrow-down {
+  @include radient-icons.pyramid-arrow-down();
+}
+
+.house {
+  @include radient-icons.house();
+}
+
+.sun {
+  @include radient-icons.sun();
 }
 
 .blaj {

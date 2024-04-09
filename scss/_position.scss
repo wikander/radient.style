@@ -13,7 +13,3 @@
 @function pointOpenDown($p) {
   @return utils.openDown(point($p));
 }
-
-@function relative($p) {
-  @return math.percentage($p);
-}
