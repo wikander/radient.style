@@ -1,8 +1,8 @@
 @use "./position.scss";
 @use "./vars.scss";
 @use "./paint.scss";
-@function circularOuline($c: currentColor, $bgc: #fff) {
-  @return paint.circleOutline(
+@function circularOutline($c: currentColor, $bgc: #fff) {
+  @return paint.circleOutlined(
     $c,
     vars.$transparent,
     $bgc,

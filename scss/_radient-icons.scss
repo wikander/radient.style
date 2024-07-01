@@ -331,44 +331,55 @@
 }
 
 @mixin ball($c: currentColor, $bgc: #fff) {
-  background-image: #{paint.circleOutline(
+  background-image: #{paint.circleOutlined(
         $bgc,
         vars.$transparent,
         vars.$transparent,
         0%,
         50%,
-        35%
+        35%,
+        position.point(2),
+        true
       )},
-    #{paint.circleOutline(
+    #{paint.circleOutlined(
         $bgc,
         vars.$transparent,
         vars.$transparent,
         100%,
         50%,
-        35%
+        35%,
+        position.point(2),
+        true
       )},
-    #{paint.circle($c, $bgc, 50%, 50%, math.percentage(math.div(5, 12)))};
+    #{paint.circle($c, $bgc, 50%, 50%, math.percentage(math.div(5, 12)), true)};
 }
 
 @mixin barcode($c: currentColor, $bgc: #fff) {
-  @include radient-dynamic.barcode(
-    5 4 7 8 6 2 9 9 2 6 5 10 4 2 3 6 7,
-    $c,
-    $bgc
-  );
+  background-image: paint.stripes(
+      $bgc,
+      0,
+      [(position.point(5.5), position.point(13), vars.$transparent)]
+    ),
+    radient-dynamic.barcode(
+      5 4 7 8 6 2 9 9 2 6 5 10 4 2 3 6 7,
+      position.point(3),
+      $c,
+      $bgc
+    );
 }
 
 @mixin search($c: currentColor, $bgc: #fff) {
   $handleWidth: position.point(2);
 
-  background-image: #{paint.circleOutline(
+  background-image: #{paint.circleOutlined(
         $c,
         $bgc,
         vars.$transparent,
         40%,
         40%,
         position.point(6.5),
-        position.point(4)
+        position.point(4),
+        true
       )},
     #{paint.rectangle(
         $c,
@@ -455,7 +466,7 @@
 }
 
 @mixin add-circle($c: currentColor, $bgc: #fff) {
-  background-image: #{partials.circularOuline($c, $bgc)},
+  background-image: #{partials.circularOutline($c, $bgc)},
     #{radient-dynamic.plus(12, 10, 10, 2, $c, $bgc)};
 }
 
@@ -464,7 +475,7 @@
 }
 
 @mixin remove-circle($c: currentColor, $bgc: #fff) {
-  background-image: #{partials.circularOuline($c, $bgc)},
+  background-image: #{partials.circularOutline($c, $bgc)},
     #{radient-dynamic.minus(12, 10, 2, $c, $bgc)};
 }
 
@@ -473,7 +484,7 @@
 }
 
 @mixin info-circle($c: currentColor, $bgc: #fff) {
-  background-image: #{partials.circularOuline($c, $bgc)},
+  background-image: #{partials.circularOutline($c, $bgc)},
     #{radient-dynamic.info(12, 2, $c, $bgc)};
 }
 
@@ -535,7 +546,8 @@
         $bgc,
         position.point(12),
         position.point(4),
-        position.point(2)
+        position.point(2),
+        true
       )};
 }
 
@@ -545,7 +557,8 @@
         vars.$transparent,
         position.point(12),
         position.point(4),
-        position.point(2)
+        position.point(2),
+        true
       )},
     #{paint.rectangle(
         $c,
@@ -684,37 +697,39 @@
 }
 
 @mixin calendar($c: currentColor, $bgc: #fff) {
-  background-image: #{paint.circle(
-        $c,
-        vars.$transparent,
-        position.point(18),
-        position.point(3),
-        position.point(1.5)
-      )},
-    #{paint.circle(
-        $c,
-        vars.$transparent,
-        position.point(6),
-        position.point(3),
-        position.point(1.5)
-      )},
-    #{paint.stripes(
-        $bgc,
-        90deg,
-        [(position.point(2), position.point(20), vars.$transparent)]
-      )},
-    #{paint.stripes(
-        $bgc,
-        0,
-        [(position.point(1), position.point(2), $c),
-        (position.point(16), position.point(5), $c, vars.$transparent)]
-      )},
-    #{paint.stripes(
-        $bgc,
-        90deg,
-        [(position.point(2), position.point(2), $c),
-        (position.point(20), position.point(2), $c)]
-      )};
+  background-image: paint.circle(
+      $c,
+      vars.$transparent,
+      position.point(18),
+      position.point(3),
+      position.point(1.5),
+      true
+    ),
+    paint.circle(
+      $c,
+      vars.$transparent,
+      position.point(6),
+      position.point(3),
+      position.point(1.5),
+      true
+    ),
+    paint.stripes(
+      $bgc,
+      90deg,
+      [(position.point(2), position.point(20), vars.$transparent)]
+    ),
+    paint.stripes(
+      $bgc,
+      0,
+      [(position.point(1), position.point(2), $c),
+      (position.point(16), position.point(5), $c, vars.$transparent)]
+    ),
+    paint.stripes(
+      $bgc,
+      90deg,
+      [(position.point(2), position.point(2), $c),
+      (position.point(20), position.point(2), $c)]
+    );
 }
 
 @mixin credit-card($c: currentColor, $bgc: #fff) {
@@ -744,7 +759,8 @@
         vars.$transparent,
         position.point(12),
         position.point(4),
-        position.point(2)
+        position.point(2),
+        true
       )},
     #{paint.stripes(
         $bgc,
@@ -891,7 +907,7 @@
 }
 
 @mixin sun($c: currentColor, $bgc: #fff) {
-  background-image: #{paint.circleOutline(
+  background-image: #{paint.circleOutlined(
         $bgc,
         $c,
         vars.$transparent,
@@ -902,4 +918,25 @@
         true
       )},
     rayPair(45deg, $c, $bgc), rayPair(0, $c, $bgc);
+}
+
+@mixin drop($c: currentColor, $bgc: #fff) {
+  background-image: #{paint.circle(
+        $c,
+        vars.$transparent,
+        position.point(12),
+        position.point(14.5),
+        position.point(6.5),
+        true
+      )},
+    #{paint.triangle(
+        $c,
+        $bgc,
+        position.point(12),
+        position.point(1.5),
+        60deg,
+        position.point(9.75),
+        180deg,
+        true
+      )};
 }

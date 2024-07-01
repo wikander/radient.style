@@ -228,6 +228,10 @@
   @include radient-icons.sun();
 }
 
+.drop {
+  @include radient-icons.drop();
+}
+
 .blaj {
   display: flex;
   justify-content: center;

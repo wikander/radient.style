@@ -69,43 +69,50 @@
     conic-gradient(from $starAngle at 50% 50%, $renderedPieces);
 }
 
-@mixin barcode($pattern, $c, $bgc) {
+@function barcode($pattern, $horizontalMargin, $c, $bgc) {
   $totalNumberOfModules: 95;
 
   $patternSum: 0;
   @each $size in $pattern {
     $patternSum: $patternSum + $size;
   }
+
   @if ($patternSum != $totalNumberOfModules) {
     @error "Wrong number of modules in pattern: #{$patternSum}";
   }
 
-  $colors: $bgc $c;
+  $moduleWidth: math.div((100% - 2 * $horizontalMargin), $totalNumberOfModules);
 
-  $linearGradientPattern: "";
+  $colors: ($bgc $c);
+
+  $linearGradientPattern: ();
   $index: 1;
-  $prevEnd: 2.5%;
+  $prevEnd: $horizontalMargin;
 
   @each $size in $pattern {
     $currentColor: list.nth($colors, $index % 2 + 1);
-    $currentWidth: list.nth($pattern, $index);
-    $thisEnd: $prevEnd + $currentWidth;
+    $thisEnd: $prevEnd + ($size * $moduleWidth);
     $separator: ",";
 
     @if $index == 1 {
       $separator: "";
     }
-    $linearGradientPattern: "#{$linearGradientPattern}#{$separator} #{$currentColor} #{$prevEnd} #{$thisEnd}";
+
+    $linearGradientPattern: list.append(
+      $linearGradientPattern,
+      ($currentColor $prevEnd $thisEnd),
+      $separator: comma
+    );
 
     $prevEnd: $thisEnd;
     $index: $index + 1;
   }
 
-  background-image: linear-gradient(
+  @return linear-gradient(
     to right,
-    vars.$transparent 2.5%,
-    #{$linearGradientPattern},
-    vars.$transparent 97.5%
+    vars.$transparent $horizontalMargin,
+    $linearGradientPattern,
+    vars.$transparent (100% - $horizontalMargin)
   );
 }
 
@@ -137,7 +144,7 @@
         $eyeSize
       )},
     // leftEye,
-    #{paint.circleOutline($c, vars.$transparent, $bgc, 50%, 50%, 50%)},
+    #{paint.circleOutlined($c, vars.$transparent, $bgc, 50%, 50%, 50%)},
     // Head
     #{paint.circle($c, vars.$transparent, 80%, -15%, 50%)},
     // Hair2,

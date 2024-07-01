@@ -108,12 +108,39 @@
     stripes($bgcMain, $mainAngle, [($mainStart, $height, $c)], $antiAliased);
 }
 
-@function circle($c, $bgc, $positionX, $positionY, $radius) {
-  @return oval($c, $bgc, $positionX, $positionY, $radius, $radius);
+@function circle(
+  $c,
+  $bgc,
+  $positionX,
+  $positionY,
+  $radius,
+  $antiAliased: false
+) {
+  @return oval(
+    $c,
+    $bgc,
+    $positionX,
+    $positionY,
+    $radius,
+    $radius,
+    $antiAliased
+  );
 }
 
-@function oval($c, $bgc, $positionX, $positionY, $radiusX, $radiusY) {
-  @return "radial-gradient(#{$radiusX} #{$radiusY} at #{$positionX} #{$positionY}, #{$c} calc(100% - 1px), #{$bgc} 100%)";
+@function oval(
+  $c,
+  $bgc,
+  $positionX,
+  $positionY,
+  $radiusX,
+  $radiusY,
+  $antiAliased: false
+) {
+  @return radial-gradient(
+    #{$radiusX} #{$radiusY} at #{$positionX} #{$positionY},
+    #{$c} 100%,
+    #{$bgc} utils.openUp(100%, $antiAliased)
+  );
 }
 
 @function triangle(
@@ -134,7 +161,7 @@
   @return "#{$height}, #{sector($color, $bgc, $direction, $angle, $positionX, $positionY, $antiAliased)}";
 }
 
-@function circleOutline(
+@function circleOutlined(
   $c,
   $bgc1,
   $bgc2,
@@ -144,7 +171,7 @@
   $lineWidth: math.percentage(vars.$lineWidthRelative),
   $antiAliased: false
 ) {
-  @return ovalOutline(
+  @return ovalOutlined(
     $c,
     $bgc1,
     $bgc2,
@@ -157,7 +184,7 @@
   );
 }
 
-@function ovalOutline(
+@function ovalOutlined(
   $c,
   $bgc1,
   $bgc2,
